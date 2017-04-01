@@ -94,14 +94,22 @@ export module RESTData {
             }
         }
 
+        // If we're on iOS, the IDs we get from Office.context.mailbox.item are already REST IDs. Otherwise we need
+        // to convert them from the EWS ID format to the REST ID format.
+        private getRestId(itemId: string) {
+            if (this.mailbox.diagnostics.hostName === 'OutlookIOS') {
+                return itemId;
+            }
+
+            return this.mailbox.convertToRestId(itemId, Office.MailboxEnums.RestVersion.v2_0);
+        }
+
         // Send a REST request to retrieve a list of messages in this conversation.
         private getConversation(result: Office.AsyncResult) {
             this.token = <string>result.value;
 
             const conversationId = (<Office.Message>this.mailbox.item).conversationId;
-            const restConversationId = this.mailbox.diagnostics.hostName === 'OutlookIOS'
-                ? conversationId
-                : this.mailbox.convertToRestId(conversationId, Office.MailboxEnums.RestVersion.v2_0);
+            const restConversationId = this.getRestId(conversationId);
             const restUrl = `${this.mailbox.restUrl}${Endpoint}/messages?$filter=ConversationId eq '${restConversationId}'&$select=Id,Subject,BodyPreview,Sender,ToRecipients,ParentFolderId`;
 
             console.log(`Getting the list of items in the conversation: ${restUrl}`);
@@ -133,9 +141,7 @@ export module RESTData {
 
             // We should ignore any messages in the same folder.
             const itemId = (<Office.ItemRead>this.mailbox.item).itemId;
-            const restItemId = this.mailbox.diagnostics.hostName === 'OutlookIOS'
-                ? itemId
-                : this.mailbox.convertToRestId(itemId, Office.MailboxEnums.RestVersion.v2_0);
+            const restItemId = this.getRestId(itemId);
 
             for (let i = 0; i < this.conversationMessages.length; ++i) {
                 if (this.conversationMessages[i].Id === restItemId) {
