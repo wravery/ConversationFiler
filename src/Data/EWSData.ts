@@ -73,9 +73,9 @@ export module EWSData {
                 '    <m:ItemIds>',
             ];
 
-            for (let i = 0; i < messages.length; i++) {
-                builder.push(`      <t:ItemId Id="${messages[i].itemId.id}" ChangeKey="${messages[i].itemId.changeKey}" />`);
-            }
+            messages.map(message => {
+                builder.push(`      <t:ItemId Id="${message.itemId.id}" ChangeKey="${message.itemId.changeKey}" />`);
+            });
 
             builder.push(
                 '    </m:ItemIds>',
@@ -114,9 +114,9 @@ export module EWSData {
                 '    <m:FolderIds>'
             ];
 
-            for (let i = 0; i < folders.length; i++) {
-                builder.push(`      <t:FolderId Id="${folders[i].folderId.id}" ChangeKey="${folders[i].folderId.changeKey}" />`);
-            }
+            folders.map(folder => {
+                builder.push(`      <t:FolderId Id="${folder.folderId.id}" ChangeKey="${folder.folderId.changeKey}" />`);
+            });
 
             builder.push(
                 '    </m:FolderIds>',
@@ -136,9 +136,9 @@ export module EWSData {
                 '    <m:ItemIds>',
             ];
 
-            for (let i = 0; i < messages.length; i++) {
-                builder.push(`      <t:ItemId Id="${messages[i].itemId.id}" ChangeKey="${messages[i].itemId.changeKey}" />`);
-            }
+            messages.map(message => {
+                builder.push(`      <t:ItemId Id="${message.itemId.id}" ChangeKey="${message.itemId.changeKey}" />`);
+            });
 
             builder.push(
                 '    </m:ItemIds>',
@@ -214,9 +214,9 @@ export module EWSData {
 
             let $otherFolderItemIds = $conversation.find('GlobalItemIds > ItemId');
 
-            for (var i = 0; i < sameFolderItemIds.length; i++) {
-                $otherFolderItemIds = $otherFolderItemIds.filter(`[Id!="${sameFolderItemIds[i].id}"]`);
-            }
+            sameFolderItemIds.map(itemId => {
+                $otherFolderItemIds = $otherFolderItemIds.filter(`[Id!="${itemId.id}"]`);
+            });
 
             let otherFolderItemIds: ItemId[] = [];
 
@@ -236,23 +236,9 @@ export module EWSData {
 
             this.conversation = {
                 id: (<Office.Message>this.mailbox.item).conversationId,
-                items: [],
-                global: []
+                items: sameFolderItemIds.map(itemId => ({ itemId: itemId, conversation: this.conversation })),
+                global: otherFolderItemIds.map(itemId => ({ itemId: itemId, conversation: this.conversation }))
             };
-
-            for (let i = 0; i < sameFolderItemIds.length; i++) {
-                this.conversation.items.push({
-                    itemId: sameFolderItemIds[i],
-                    conversation: this.conversation
-                });
-            }
-
-            for (var i = 0; i < otherFolderItemIds.length; i++) {
-                this.conversation.global.push({
-                    itemId: otherFolderItemIds[i],
-                    conversation: this.conversation
-                });
-            }
 
             this.loadExcludedFolders();
         }
@@ -312,17 +298,16 @@ export module EWSData {
         private getMessages() {
             let $messages = $(this.itemsXml.querySelectorAll('GetItemResponseMessage > Items > Message > ParentFolderId'));
 
-            for (let i = 0; i < this.excludedFolders.length; i++) {
-                $messages = $messages.filter(`[Id!="${this.excludedFolders[i].folderId.id}"]`);
-            }
+            this.excludedFolders.map(folder => {
+                $messages = $messages.filter(`[Id!="${folder.folderId.id}"]`);
+            });
 
             $messages = $messages.parent();
 
-            for (let i = 0; i < this.conversation.global.length; i++) {
-                let item = this.conversation.global[i];
+            this.conversation.global.map(item => {
+                for (let i = 0; i < $messages.length; i++) {
+                    const msg = $messages[i];
 
-                for (let j = 0; j < $messages.length; j++) {
-                    let msg = $messages[j];
                     if (msg.querySelector(`ItemId[Id="${item.itemId.id}"]`)) {
                         let folderId = msg.querySelector('ParentFolderId');
 
@@ -338,7 +323,7 @@ export module EWSData {
                         break;
                     }
                 }
-            }
+            });
 
             this.loadFolderDisplayNames();
         }
@@ -347,15 +332,13 @@ export module EWSData {
             if (this.folderNamesXml) {
                 this.getFolderDisplayNames();
             } else {
-                let destinations = [];
+                let destinations: FolderData[] = [];
 
-                for (let i = 0; i < this.conversation.global.length; i++) {
-                    let item = this.conversation.global[i];
-
+                this.conversation.global.map(item => {
                     if (item.folder) {
                         destinations.push(item.folder);
                     }
-                }
+                });
 
                 if (!destinations.length) {
                     this.onLoadComplete([]);

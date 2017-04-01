@@ -80,13 +80,7 @@ export module RESTData {
             if (requests.length > 1) {
                 $.when.apply($, requests)
                     .done((...results: any[]) => {
-                        let values: T[] = [];
-
-                        results.map((result: any[]) => {
-                            values.push(<T>result[0]);
-                        });
-
-                        onDone(values);
+                        onDone(results.map(result => <T>result[0]));
                     }).fail((message: string) => {
                         this.onError(message);
                     });
@@ -170,13 +164,13 @@ export module RESTData {
 
             this.onProgress(Data.Progress.GetExcludedFolders);
 
-            this.collateRequests(<JQueryPromise<FolderJson>[]>requests, (results: FolderJson[]) => {
-                results.map((value: FolderJson) => {
+            this.collateRequests(<JQueryPromise<FolderJson>[]>requests, (results) => {
+                results.map((value) => {
                     excludedFolderIds.push(value.Id);
                 });
 
                 this.getFolderNames(currentFolderId, excludedFolderIds);
-            }, (message: string) => {
+            }, (message) => {
                 this.onError(message);
             });
         }
@@ -216,19 +210,17 @@ export module RESTData {
             this.currentFolderId = currentFolderId;
             this.excludedFolderIds = excludedFolderIds;
 
-            let requests: JQueryXHR[] = [];
-
-            folderMap.map((entry) => {
+            let requests = folderMap.map((entry) => {
                 const restUrl = `${this.mailbox.restUrl}${Endpoint}/mailfolders/${entry.folder.Id}?$select=Id,DisplayName`;
 
                 console.log(`Getting included folder name: ${restUrl}`);
 
-                requests.push($.ajax({
+                return $.ajax({
                     url: restUrl,
                     async: true,
                     dataType: 'json',
                     headers: { 'Authorization': `Bearer ${this.token}` }
-                }));
+                });
             });
 
             this.onProgress(Data.Progress.GetFolderNames);
@@ -247,26 +239,12 @@ export module RESTData {
 
                 folderMap.map((entry) => {
                     entry.messages.map((message) => {
-                        let recipients: string[] = [];
-
-                        message.ToRecipients.map((address) => {
-                            recipients.push(address.EmailAddress.Name);
-                        });
-
-                        let value: Data.Message = {
-                            Id: message.Id,
-                            BodyPreview: message.BodyPreview,
-                            Sender: message.Sender.EmailAddress.Name,
-                            ToRecipients: recipients.join('; '),
-                            ParentFolderId: message.ParentFolderId
-                        };
-
                         matches.push({
                             message: {
                                 Id: message.Id,
                                 BodyPreview: message.BodyPreview,
                                 Sender: message.Sender.EmailAddress.Name,
-                                ToRecipients: recipients.join('; '),
+                                ToRecipients: message.ToRecipients.map(address => address.EmailAddress.Name).join('; '),
                                 ParentFolderId: message.ParentFolderId
                             },
                             folder: {

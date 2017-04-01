@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Data } from "../Data/Model"
+import { Data } from "../Data/Model";
 
 export interface SearchResultsProps {
     matches: Data.Match[];
@@ -18,10 +18,8 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
             return null;
         }
 
-        let rows: JSX.Element[] = [];
-
-        this.props.matches.map((value: Data.Match, index: number) => {
-            rows.push(<tr key={index}>
+        let rows = this.props.matches.map((value, index) => {
+            return (<tr key={index}>
                 <td><a name={value.folder.Id} onClick={this.onClickFolder}>{value.folder.DisplayName}</a></td>
                 <td>{value.message.Sender}</td>
                 <td>{value.message.ToRecipients}</td>
