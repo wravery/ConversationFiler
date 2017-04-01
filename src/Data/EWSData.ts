@@ -25,52 +25,52 @@ export module EWSData {
         items: MessageData[];
         global: MessageData[];
     }
-   
+
     class RequestBuilder {
         private static beginRequest = [
-            '<?xml version="1.0" encoding="utf-8" ?>', 
-            '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"', 
-            '    xmlns:xsd="http://www.w3.org/2001/XMLSchema"', 
-            '    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"', 
-            '    xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"', 
-            '    xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">', 
-            '<soap:Header>', 
-            '  <t:RequestServerVersion Version="Exchange2010_SP1" />', 
-            '</soap:Header>', 
-            '<soap:Body>', 
+            '<?xml version="1.0" encoding="utf-8" ?>',
+            '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
+            '    xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
+            '    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"',
+            '    xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"',
+            '    xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">',
+            '<soap:Header>',
+            '  <t:RequestServerVersion Version="Exchange2010_SP1" />',
+            '</soap:Header>',
+            '<soap:Body>',
         ].join('\n');
 
         private static endRequest = [
-            '</soap:Body>', 
+            '</soap:Body>',
             '</soap:Envelope>'
         ].join('\n');
 
         static findConversationRequest = [
-            RequestBuilder.beginRequest, 
-            '  <m:FindConversation>', 
-            '    <m:IndexedPageItemView BasePoint="Beginning" Offset="0" MaxEntriesReturned="20" />', 
-            '    <m:ParentFolderId>', 
-            '      <t:DistinguishedFolderId Id="inbox"/>', 
-            '    </m:ParentFolderId>', 
-            '  </m:FindConversation>', 
+            RequestBuilder.beginRequest,
+            '  <m:FindConversation>',
+            '    <m:IndexedPageItemView BasePoint="Beginning" Offset="0" MaxEntriesReturned="20" />',
+            '    <m:ParentFolderId>',
+            '      <t:DistinguishedFolderId Id="inbox"/>',
+            '    </m:ParentFolderId>',
+            '  </m:FindConversation>',
             RequestBuilder.endRequest
         ].join('\n');
 
         static getItemsRequest(messages: MessageData[]) {
             var builder = [
-                RequestBuilder.beginRequest, 
-                '  <m:GetItem>', 
-                '    <m:ItemShape>', 
-                '      <t:BaseShape>IdOnly</t:BaseShape>', 
-                '      <t:BodyType>Text</t:BodyType>', 
-                '      <t:AdditionalProperties>', 
-                '        <t:FieldURI FieldURI="item:ParentFolderId" />', 
-                '        <t:FieldURI FieldURI="message:Sender" />', 
-                '        <t:FieldURI FieldURI="message:ToRecipients" />', 
-                '        <t:FieldURI FieldURI="item:Body" />', 
-                '      </t:AdditionalProperties>', 
-                '    </m:ItemShape>', 
-                '    <m:ItemIds>', 
+                RequestBuilder.beginRequest,
+                '  <m:GetItem>',
+                '    <m:ItemShape>',
+                '      <t:BaseShape>IdOnly</t:BaseShape>',
+                '      <t:BodyType>Text</t:BodyType>',
+                '      <t:AdditionalProperties>',
+                '        <t:FieldURI FieldURI="item:ParentFolderId" />',
+                '        <t:FieldURI FieldURI="message:Sender" />',
+                '        <t:FieldURI FieldURI="message:ToRecipients" />',
+                '        <t:FieldURI FieldURI="item:Body" />',
+                '      </t:AdditionalProperties>',
+                '    </m:ItemShape>',
+                '    <m:ItemIds>',
             ];
 
             for (let i = 0; i < messages.length; i++) {
@@ -86,31 +86,31 @@ export module EWSData {
         }
 
         static excludedFolderIdsRequest = [
-            RequestBuilder.beginRequest, 
-            '  <m:GetFolder>', 
-            '    <m:FolderShape>', 
-            '      <t:BaseShape>IdOnly</t:BaseShape>', 
-            '    </m:FolderShape>', 
-            '    <m:FolderIds>', 
-            '      <t:DistinguishedFolderId Id="inbox"/>', 
-            '      <t:DistinguishedFolderId Id="drafts"/>', 
-            '      <t:DistinguishedFolderId Id="sentitems"/>', 
-            '      <t:DistinguishedFolderId Id="deleteditems"/>', 
-            '    </m:FolderIds>', 
-            '  </m:GetFolder >', 
+            RequestBuilder.beginRequest,
+            '  <m:GetFolder>',
+            '    <m:FolderShape>',
+            '      <t:BaseShape>IdOnly</t:BaseShape>',
+            '    </m:FolderShape>',
+            '    <m:FolderIds>',
+            '      <t:DistinguishedFolderId Id="inbox"/>',
+            '      <t:DistinguishedFolderId Id="drafts"/>',
+            '      <t:DistinguishedFolderId Id="sentitems"/>',
+            '      <t:DistinguishedFolderId Id="deleteditems"/>',
+            '    </m:FolderIds>',
+            '  </m:GetFolder >',
             RequestBuilder.endRequest
         ].join('\n');
 
         static getFolderNamesRequest(folders: FolderData[]) {
             var builder = [
-                RequestBuilder.beginRequest, 
-                '  <m:GetFolder>', 
-                '    <m:FolderShape>', 
-                '      <t:BaseShape>IdOnly</t:BaseShape>', 
-                '      <t:AdditionalProperties>', 
-                '        <t:FieldURI FieldURI="folder:DisplayName" />', 
-                '      </t:AdditionalProperties>', 
-                '    </m:FolderShape>', 
+                RequestBuilder.beginRequest,
+                '  <m:GetFolder>',
+                '    <m:FolderShape>',
+                '      <t:BaseShape>IdOnly</t:BaseShape>',
+                '      <t:AdditionalProperties>',
+                '        <t:FieldURI FieldURI="folder:DisplayName" />',
+                '      </t:AdditionalProperties>',
+                '    </m:FolderShape>',
                 '    <m:FolderIds>'
             ];
 
@@ -128,12 +128,12 @@ export module EWSData {
 
         static moveItemsRequest(messages: MessageData[], folderId: string) {
             var builder = [
-                RequestBuilder.beginRequest, 
-                '  <m:MoveItem>', 
-                '    <m:ToFolderId>', 
-                '      <t:FolderId Id="' + folderId + '"/>', 
-                '    </m:ToFolderId>', 
-                '    <m:ItemIds>', 
+                RequestBuilder.beginRequest,
+                '  <m:MoveItem>',
+                '    <m:ToFolderId>',
+                '      <t:FolderId Id="' + folderId + '"/>',
+                '    </m:ToFolderId>',
+                '    <m:ItemIds>',
             ];
 
             for (let i = 0; i < messages.length; i++) {
@@ -152,19 +152,19 @@ export module EWSData {
     class Context {
         constructor(private mailbox: Office.Mailbox) {
         }
-        
+
         private conversationXml?: XMLDocument;
         private conversation?: ConversationData;
         private excludedFolders?: FolderData[];
         private itemsXml?: XMLDocument;
         private folderNamesXml?: XMLDocument;
 
-        private onLoadComplete?:(results: Data.Match[]) => void;
-        private onProgress?:(progress: Data.Progress) => void;
-        private onError?:(message: string) => void;
-        private onMoveComplete?:(count: number) => void
+        private onLoadComplete?: (results: Data.Match[]) => void;
+        private onProgress?: (progress: Data.Progress) => void;
+        private onError?: (message: string) => void;
+        private onMoveComplete?: (count: number) => void
 
-        loadItems(onLoadComplete:(results: Data.Match[]) => void, onProgress:(progress: Data.Progress) => void, onError:(message: string) => void): void {
+        loadItems(onLoadComplete: (results: Data.Match[]) => void, onProgress: (progress: Data.Progress) => void, onError: (message: string) => void): void {
             this.onLoadComplete = onLoadComplete;
             this.onProgress = onProgress;
             this.onError = onError;
@@ -205,7 +205,7 @@ export module EWSData {
 
             $conversation.find('ItemIds > ItemId').each(function () {
                 const $this = $(this);
-                
+
                 sameFolderItemIds.push({
                     id: $this.attr('Id'),
                     changeKey: $this.attr('ChangeKey')
@@ -246,7 +246,7 @@ export module EWSData {
                     conversation: this.conversation
                 });
             }
-            
+
             for (var i = 0; i < otherFolderItemIds.length; i++) {
                 this.conversation.global.push({
                     itemId: otherFolderItemIds[i],
@@ -348,10 +348,10 @@ export module EWSData {
                 this.getFolderDisplayNames();
             } else {
                 let destinations = [];
-                
+
                 for (let i = 0; i < this.conversation.global.length; i++) {
                     let item = this.conversation.global[i];
-                    
+
                     if (item.folder) {
                         destinations.push(item.folder);
                     }
@@ -407,11 +407,11 @@ export module EWSData {
             this.onLoadComplete(matches);
         }
 
-        moveItems(folderId: string, onMoveComplete:(count: number) => void, onError:(message: string) => void) {
+        moveItems(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void) {
             this.onMoveComplete = onMoveComplete;
             this.onError = onError;
 
-           console.log(`Moving items to folder: ${folderId}`);
+            console.log(`Moving items to folder: ${folderId}`);
 
             this.mailbox.makeEwsRequestAsync(RequestBuilder.moveItemsRequest(this.conversation.items, folderId), (result) => {
                 if (!result.value) {
@@ -432,11 +432,11 @@ export module EWSData {
             this.context = new Context(mailbox);
         }
 
-        getItemsAsync(onLoadComplete:(results: Data.Match[]) => void, onProgress:(progress: Data.Progress) => void, onError:(message: string) => void): void {
+        getItemsAsync(onLoadComplete: (results: Data.Match[]) => void, onProgress: (progress: Data.Progress) => void, onError: (message: string) => void): void {
             this.context.loadItems(onLoadComplete, onProgress, onError);
         }
 
-        moveItemsAsync(folderId: string, onMoveComplete:(count: number) => void, onError:(message: string) => void): void {
+        moveItemsAsync(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void): void {
             this.context.moveItems(folderId, onMoveComplete, onError);
         }
     }

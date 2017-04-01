@@ -28,7 +28,7 @@ export module Data {
     }
 
     export interface IModel {
-        getItemsAsync(onLoadComplete:(results: Match[]) => void, onProgress:(progress: Progress) => void, onError:(message: string) => void): void;
-        moveItemsAsync(folderId: string, onMoveComplete:(count: number) => void, onError:(message: string) => void): void;
+        getItemsAsync(onLoadComplete: (results: Match[]) => void, onProgress: (progress: Progress) => void, onError: (message: string) => void): void;
+        moveItemsAsync(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void): void;
     }
 }

@@ -59,7 +59,7 @@
 
         <DesktopFormFactor>
           <FunctionFile resid="functionFile" />
-          
+
           <!-- Message read form -->
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
@@ -125,7 +125,7 @@
 
           <DesktopFormFactor>
             <FunctionFile resid="functionFile" />
-            
+
             <!-- Message read form -->
             <ExtensionPoint xsi:type="MessageReadCommandSurface">
               <OfficeTab id="TabDefault">
@@ -186,24 +186,24 @@
 
       <Resources>
         <bt:Images>
-            <!-- Blue icon -->
-            <bt:Image id="blue-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-16.png"/>
-            <bt:Image id="blue-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-32.png"/>
-            <bt:Image id="blue-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-80.png"/>
+          <!-- Blue icon -->
+          <bt:Image id="blue-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-16.png"/>
+          <bt:Image id="blue-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-32.png"/>
+          <bt:Image id="blue-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-80.png"/>
         </bt:Images>
         <bt:Urls>
-            <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
+          <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
         </bt:Urls>
         <bt:ShortStrings>
-            <bt:String id="groupLabel" DefaultValue="Conversation Filer"/>
+          <bt:String id="groupLabel" DefaultValue="Conversation Filer"/>
 
-            <!-- Read mode -->
-            <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
-            <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
+          <!-- Read mode -->
+          <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
+          <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
         </bt:ShortStrings>
         <bt:LongStrings>
-            <!-- Read mode -->
-            <bt:String id="funcReadSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+          <!-- Read mode -->
+          <bt:String id="funcReadSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
         </bt:LongStrings>
       </Resources>
     </VersionOverrides>

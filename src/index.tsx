@@ -101,30 +101,30 @@ Office.initialize = function () {
             );
 
             const dummyResults: Data.Match[] = [{
-                    folder: {
-                        Id: 'folderId1',
-                        DisplayName: 'Folder 1'
-                    },
-                    message: {
-                        Id: 'messageId1',
-                        BodyPreview: 'Here\'s a preview of a message body',
-                        Sender: 'Foo Bar',
-                        ToRecipients: 'Baz Bar',
-                        ParentFolderId: 'folderId1'
-                    }
-                }, {
-                    folder: {
-                        Id: 'folderId2',
-                        DisplayName: 'Folder 2'
-                    },
-                    message: {
-                        Id: 'messageId2',
-                        BodyPreview: 'Here\'s another message body',
-                        Sender: 'Baz Bar',
-                        ToRecipients: 'Foo Bar',
-                        ParentFolderId: 'folderId2'
-                    }
-                }];
+                folder: {
+                    Id: 'folderId1',
+                    DisplayName: 'Folder 1'
+                },
+                message: {
+                    Id: 'messageId1',
+                    BodyPreview: 'Here\'s a preview of a message body',
+                    Sender: 'Foo Bar',
+                    ToRecipients: 'Baz Bar',
+                    ParentFolderId: 'folderId1'
+                }
+            }, {
+                folder: {
+                    Id: 'folderId2',
+                    DisplayName: 'Folder 2'
+                },
+                message: {
+                    Id: 'messageId2',
+                    BodyPreview: 'Here\'s another message body',
+                    Sender: 'Baz Bar',
+                    ToRecipients: 'Foo Bar',
+                    ParentFolderId: 'folderId2'
+                }
+            }];
 
             ReactDOM.render(
                 <ConversationFiler mailbox={null} storedResults={dummyResults} />,

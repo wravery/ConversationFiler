@@ -49,13 +49,13 @@ export module RESTData {
         private currentFolderId?: string;
         private conversationMessages?: MessageJson[];
         private excludedFolderIds?: string[];
-        
-        private onLoadComplete?:(results: Data.Match[]) => void;
-        private onProgress?:(progress: Data.Progress) => void;
-        private onError?:(message: string) => void;
-        private onMoveComplete?:(count: number) => void
 
-        loadItems(onLoadComplete:(results: Data.Match[]) => void, onProgress:(progress: Data.Progress) => void, onError:(message: string) => void): void {
+        private onLoadComplete?: (results: Data.Match[]) => void;
+        private onProgress?: (progress: Data.Progress) => void;
+        private onError?: (message: string) => void;
+        private onMoveComplete?: (count: number) => void
+
+        loadItems(onLoadComplete: (results: Data.Match[]) => void, onProgress: (progress: Data.Progress) => void, onError: (message: string) => void): void {
             this.onLoadComplete = onLoadComplete;
             this.onProgress = onProgress;
             this.onError = onError;
@@ -64,7 +64,7 @@ export module RESTData {
             this.onProgress(Data.Progress.GetCallbackToken);
 
             // Start the chain of requests by getting a callback token.
-            this.mailbox.getCallbackTokenAsync({isRest: true},
+            this.mailbox.getCallbackTokenAsync({ isRest: true },
                 (result: Office.AsyncResult) => {
                     if (result.status === Office.AsyncResultStatus.Succeeded) {
                         this.getConversation(result);
@@ -109,7 +109,7 @@ export module RESTData {
                 ? conversationId
                 : this.mailbox.convertToRestId(conversationId, Office.MailboxEnums.RestVersion.v2_0);
             const restUrl = `${this.mailbox.restUrl}${Endpoint}/messages?$filter=ConversationId eq '${restConversationId}'&$select=Id,Subject,BodyPreview,Sender,ToRecipients,ParentFolderId`;
-            
+
             console.log(`Getting the list of items in the conversation: ${restUrl}`);
             this.onProgress(Data.Progress.GetConversation);
 
@@ -117,7 +117,7 @@ export module RESTData {
                 url: restUrl,
                 async: true,
                 dataType: 'json',
-                headers: { 'Authorization': `Bearer ${this.token}`}
+                headers: { 'Authorization': `Bearer ${this.token}` }
             }).done((result: MessageJsonCollection) => {
                 this.getExcludedFolders(result);
             }).fail((message: string) => {
@@ -133,7 +133,7 @@ export module RESTData {
             }
 
             this.conversationMessages = result.value;
-            
+
             let currentFolderId: string;
             let excludedFolderIds: string[] = [];
 
@@ -205,7 +205,7 @@ export module RESTData {
                 }
 
                 // Create a new entry for this folder.
-                folderMap.push({ folder: { Id: message.ParentFolderId }, messages: [ message ] });
+                folderMap.push({ folder: { Id: message.ParentFolderId }, messages: [message] });
             });
 
             if (folderMap.length === 0) {
@@ -248,7 +248,7 @@ export module RESTData {
                 folderMap.map((entry) => {
                     entry.messages.map((message) => {
                         let recipients: string[] = [];
-                        
+
                         message.ToRecipients.map((address) => {
                             recipients.push(address.EmailAddress.Name);
                         });
@@ -284,7 +284,7 @@ export module RESTData {
             });
         }
 
-        moveItems(folderId: string, onMoveComplete:(count: number) => void, onError:(message: string) => void) {
+        moveItems(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void) {
             this.onMoveComplete = onMoveComplete;
             this.onError = onError;
 
@@ -329,11 +329,11 @@ export module RESTData {
             this.context = new Context(mailbox);
         }
 
-        getItemsAsync(onLoadComplete:(results: Data.Match[]) => void, onProgress:(progress: Data.Progress) => void, onError:(message: string) => void): void {
+        getItemsAsync(onLoadComplete: (results: Data.Match[]) => void, onProgress: (progress: Data.Progress) => void, onError: (message: string) => void): void {
             this.context.loadItems(onLoadComplete, onProgress, onError);
         }
 
-        moveItemsAsync(folderId: string, onMoveComplete:(count: number) => void, onError:(message: string) => void): void {
+        moveItemsAsync(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void): void {
             this.context.moveItems(folderId, onMoveComplete, onError);
         }
     }
