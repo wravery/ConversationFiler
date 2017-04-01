@@ -1,6 +1,6 @@
 /// <reference path="../_references.ts" />
 
-import { Data } from "./Model"
+import { Data } from "./Model";
 
 export module RESTData {
     const Endpoint = '/v2.0/me';

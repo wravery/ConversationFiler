@@ -1,4 +1,4 @@
-import { Data } from "./Model"
+import { Data } from "./Model";
 
 export module EWSData {
     interface ItemId {
