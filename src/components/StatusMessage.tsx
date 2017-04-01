@@ -11,8 +11,7 @@ export class StatusMessage extends React.Component<StatusMessageProps, undefined
         let className: string;
         let status: string;
 
-        switch (this.props.progress)
-        {
+        switch (this.props.progress) {
             case Data.Progress.GetCallbackToken:
             case Data.Progress.GetConversation:
             case Data.Progress.GetExcludedFolders:
@@ -27,9 +26,9 @@ export class StatusMessage extends React.Component<StatusMessageProps, undefined
 
             default:
                 return (<div>
-                        <h3>Sorry, I couldn't figure out where this message should go. :(</h3>
-                        <span>{this.props.message}</span>
-                    </div>);
+                    <h3>Sorry, I couldn't figure out where this message should go. :(</h3>
+                    <span>{this.props.message}</span>
+                </div>);
         }
     }
 }

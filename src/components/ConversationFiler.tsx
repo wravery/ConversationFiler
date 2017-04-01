@@ -14,7 +14,7 @@ import { Feedback } from "./Feedback";
 export interface ConversationFilerProps {
     mailbox: Office.Mailbox;
     storedResults?: Data.Match[];
-    onComplete?:(folderId: string) => void;
+    onComplete?: (folderId: string) => void;
 }
 
 interface ConversationFilerState {
