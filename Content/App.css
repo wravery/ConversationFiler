@@ -1,0 +1,11 @@
+body {
+    padding: 12px;
+    height: 226px;
+    overflow: auto;
+}
+
+.feedback {
+    font-size: smaller;
+    float: right;
+    padding-left: 20px;
+}

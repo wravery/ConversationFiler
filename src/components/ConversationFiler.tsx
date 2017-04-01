@@ -1,0 +1,85 @@
+/// <reference path="../_references.ts" />
+
+import * as React from "react";
+import * as JQuery from "jquery";
+
+import { Data } from "../Data/Model"
+import { RESTData } from "../Data/RESTData";
+import { EWSData } from "../Data/EWSData";
+
+import { StatusMessage } from "./StatusMessage";
+import { SearchResults } from "./SearchResults";
+import { Feedback } from "./Feedback";
+
+export interface ConversationFilerProps {
+    mailbox: Office.Mailbox;
+    mockResults?: Data.Match[];
+    onComplete?:() => void;
+}
+
+interface ConversationFilerState {
+    progress: Data.Progress;
+    data?: Data.IModel;
+    error?: string;
+    matches?: Data.Match[];
+}
+
+export class ConversationFiler extends React.Component<ConversationFilerProps, ConversationFilerState> {
+    constructor(props: ConversationFilerProps) {
+        super(props);
+        this.state = { progress: Data.Progress.GetCallbackToken };
+    }
+
+    // Start the chain of requests by getting a callback token.
+    componentDidMount() {
+        if (this.props.mockResults) {
+            if (this.props.mockResults.length > 0) {
+                this.setState({ progress: Data.Progress.Success, matches: this.props.mockResults });
+            } else {
+                this.setState({ progress: Data.Progress.NotFound });
+            }
+
+            return;
+        } else if (!this.props.mailbox) {
+            return;
+        }
+
+        const data = this.props.mailbox.restUrl
+            ? new RESTData.Model(this.props.mailbox)
+            : new EWSData.Model(this.props.mailbox);
+
+        this.setState({ data: data });
+
+        data.getItemsAsync((results) => {
+            if (results.length > 0) {
+                this.setState({ progress: Data.Progress.Success, matches: results });
+            } else {
+                this.setState({ progress: Data.Progress.NotFound });
+            }
+        }, (progress) => {
+            this.setState({ progress: progress });
+        }, (message) => {
+            this.setState({ progress: Data.Progress.Error, error: message });
+        });
+    }
+
+    private onSelection(folderId: string) {
+        console.log(`Selected a folder: ${folderId}`);
+
+        this.state.data.moveItemsAsync(folderId, (count) => {
+            if (this.props.onComplete) {
+                this.props.onComplete();
+            }
+        }, (message) => {
+            this.setState({ progress: Data.Progress.Error, error: message });
+        });
+    }
+
+    render() {
+        return (<div>
+            <StatusMessage progress={this.state.progress} message={this.state.error} />
+            <SearchResults matches={this.state.matches} onSelection={this.onSelection.bind(this)} />
+            <Feedback />
+        </div>);
+    }
+}

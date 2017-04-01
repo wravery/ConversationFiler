@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides"
+  xsi:type="MailApp">
+  <Id>37b564c9-b5a8-4f96-bf14-a735bb3334fa</Id>
+  <Version>2.0</Version>
+  <ProviderName>Bill Avery</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Conversation Filer" />
+  <Description DefaultValue="Automatically suggest filing messages out of the Inbox based on previously filed messages in the conversation."/>
+  <IconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/MailAutoFilerLogo.png" />
+  <HighResolutionIconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/MailAutoFilerLogo.png" />
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="MailBox" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+  <!-- These elements support older clients that don't support add-in commands -->
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <!-- NOTE: Just reusing the read taskpane page that is invoked by the button
+             on the ribbon in clients that support add-in commands. You can 
+             use a completely different page if desired -->
+        <SourceLocation DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/index.html" />
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteMailbox</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="And">
+    <!-- To add more complex rules, add additional rule elements -->
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
+    <!-- E.g. To activate when a message contains an address -->
+    <!-- <Rule xsi:type="ItemHasKnownEntity" EntityType="Address" /> -->
+    <!-- Only RE: or FW: subjects -->
+    <Rule xsi:type="RuleCollection" Mode="Or">
+      <Rule xsi:type="ItemHasRegularExpressionMatch" PropertyName="Subject" IgnoreCase="true" RegExName="fwRule" RegExValue="^fwd?:"/>
+      <Rule xsi:type="ItemHasRegularExpressionMatch" PropertyName="Subject" IgnoreCase="true" RegExName="reRule" RegExValue="^re:"/>
+    </Rule>
+  </Rule>
+  <DisableEntityHighlighting>true</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.4">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+
+        <DesktopFormFactor>
+          <FunctionFile resid="functionFile" />
+          
+          <!-- Message read form -->
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadDemoGroup">
+                <Label resid="groupLabel" />
+                <!-- Function (UI-less) button -->
+                <Control xsi:type="Button" id="msgReadFunctionButton">
+                  <Label resid="funcReadButtonLabel" />
+                  <Supertip>
+                    <Title resid="funcReadSuperTipTitle" />
+                    <Description resid="funcReadSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="blue-icon-16" />
+                    <bt:Image size="32" resid="blue-icon-32" />
+                    <bt:Image size="80" resid="blue-icon-80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>fileDialog</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <!-- Blue icon -->
+        <bt:Image id="blue-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-16.png"/>
+        <bt:Image id="blue-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-32.png"/>
+        <bt:Image id="blue-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="Conversation Filer"/>
+
+        <!-- Read mode -->
+        <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
+        <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <!-- Read mode -->
+        <bt:String id="funcReadSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+      </bt:LongStrings>
+    </Resources>
+
+    <!-- VersionOverrides for the v1.1 schema -->
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+
+      <Requirements>
+        <bt:Sets DefaultMinVersion="1.4">
+          <bt:Set Name="Mailbox" />
+        </bt:Sets>
+      </Requirements>
+      <Hosts>
+        <Host xsi:type="MailHost">
+
+          <DesktopFormFactor>
+            <FunctionFile resid="functionFile" />
+            
+            <!-- Message read form -->
+            <ExtensionPoint xsi:type="MessageReadCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="msgReadDemoGroup">
+                  <Label resid="groupLabel" />
+                  <!-- Function (UI-less) button -->
+                  <Control xsi:type="Button" id="msgReadFunctionButton">
+                    <Label resid="funcReadButtonLabel" />
+                    <Supertip>
+                      <Title resid="funcReadSuperTipTitle" />
+                      <Description resid="funcReadSuperTipDescription" />
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="blue-icon-16" />
+                      <bt:Image size="32" resid="blue-icon-32" />
+                      <bt:Image size="80" resid="blue-icon-80" />
+                    </Icon>
+                    <Action xsi:type="ExecuteFunction">
+                      <FunctionName>fileDialog</FunctionName>
+                    </Action>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+
+          </DesktopFormFactor>
+
+          <MobileFormFactor>
+            <FunctionFile resid="functionFile" />
+
+            <ExtensionPoint xsi:type="MobileMessageReadCommandSurface">
+              <Group id="mobileMsgRead">
+                <Label resid="groupLabel" />
+                <Control xsi:type="MobileButton" id="mblReadFunctionButton">
+                  <Label resid="funcReadButtonLabel" />
+                  <Icon xsi:type="bt:MobileIconList">
+                    <bt:Image size="25" scale="1" resid="blue-icon-32" />
+                    <bt:Image size="25" scale="2" resid="blue-icon-32" />
+                    <bt:Image size="25" scale="3" resid="blue-icon-32" />
+
+                    <bt:Image size="32" scale="1" resid="blue-icon-32" />
+                    <bt:Image size="32" scale="2" resid="blue-icon-32" />
+                    <bt:Image size="32" scale="3" resid="blue-icon-32" />
+
+                    <bt:Image size="48" scale="1" resid="blue-icon-32" />
+                    <bt:Image size="48" scale="2" resid="blue-icon-32" />
+                    <bt:Image size="48" scale="3" resid="blue-icon-32" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>fileDialog</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </ExtensionPoint>
+          </MobileFormFactor>
+        </Host>
+      </Hosts>
+
+      <Resources>
+        <bt:Images>
+            <!-- Blue icon -->
+            <bt:Image id="blue-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-16.png"/>
+            <bt:Image id="blue-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-32.png"/>
+            <bt:Image id="blue-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-80.png"/>
+        </bt:Images>
+        <bt:Urls>
+            <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
+        </bt:Urls>
+        <bt:ShortStrings>
+            <bt:String id="groupLabel" DefaultValue="Conversation Filer"/>
+
+            <!-- Read mode -->
+            <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
+            <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
+        </bt:ShortStrings>
+        <bt:LongStrings>
+            <!-- Read mode -->
+            <bt:String id="funcReadSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+        </bt:LongStrings>
+      </Resources>
+    </VersionOverrides>
+  </VersionOverrides>
+</OfficeApp>
