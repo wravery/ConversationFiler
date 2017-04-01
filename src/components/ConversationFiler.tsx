@@ -13,8 +13,8 @@ import { Feedback } from "./Feedback";
 
 export interface ConversationFilerProps {
     mailbox: Office.Mailbox;
-    mockResults?: Data.Match[];
-    onComplete?:() => void;
+    storedResults?: Data.Match[];
+    onComplete?:(folderId: string) => void;
 }
 
 interface ConversationFilerState {
@@ -32,9 +32,9 @@ export class ConversationFiler extends React.Component<ConversationFilerProps, C
 
     // Start the chain of requests by getting a callback token.
     componentDidMount() {
-        if (this.props.mockResults) {
-            if (this.props.mockResults.length > 0) {
-                this.setState({ progress: Data.Progress.Success, matches: this.props.mockResults });
+        if (this.props.storedResults) {
+            if (this.props.storedResults.length > 0) {
+                this.setState({ progress: Data.Progress.Success, matches: this.props.storedResults });
             } else {
                 this.setState({ progress: Data.Progress.NotFound });
             }
@@ -66,9 +66,18 @@ export class ConversationFiler extends React.Component<ConversationFilerProps, C
     private onSelection(folderId: string) {
         console.log(`Selected a folder: ${folderId}`);
 
+        if (!this.state.data) {
+            // Handle the dialog or test case by just notifying the client
+            if (this.props.onComplete) {
+                this.props.onComplete(folderId);
+            }
+
+            return;
+        }
+
         this.state.data.moveItemsAsync(folderId, (count) => {
             if (this.props.onComplete) {
-                this.props.onComplete();
+                this.props.onComplete(folderId);
             }
         }, (message) => {
             this.setState({ progress: Data.Progress.Error, error: message });

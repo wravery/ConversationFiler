@@ -4,24 +4,50 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Data } from "./Data/Model"
+import { Data } from "./Data/Model";
+import { RESTData } from "./Data/RESTData";
+import { EWSData } from "./Data/EWSData";
 
 import { ConversationFiler } from "./components/ConversationFiler";
 
 Office.initialize = function () {
     const functionsRegex = /functions\.html(\?.*)?$/i;
     const noUI = functionsRegex.test(window.location.pathname);
+    const mailbox = (Office.context || ({} as Office.Context)).mailbox;
+    const storageKey = "conversationFilerMatches";
 
     if (noUI) {
         // Add the UI-less function callback if we're loaded from functions.html instead of index.html
         (window as any).fileDialog = function (event: any) {
-            Office.context.ui.displayDialogAsync(window.location.href.replace(functionsRegex, "dialog.html"), { height: 25, width: 80, displayInIframe: true }, (result) => {
-                const dialog = result.value as Office.DialogHandler;
+            const data = mailbox.restUrl
+                ? new RESTData.Model(mailbox)
+                : new EWSData.Model(mailbox);
 
-                dialog.addEventHandler(Office.EventType.DialogMessageReceived, () => {
-                    dialog.close();
-                    event.completed();
+            data.getItemsAsync((results) => {
+                window.localStorage.setItem(storageKey, JSON.stringify(results));
+
+                Office.context.ui.displayDialogAsync(window.location.href.replace(functionsRegex, "dialog.html"), { height: 25, width: 50, displayInIframe: true }, (result) => {
+                    const dialog = result.value as Office.DialogHandler;
+
+                    dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
+                        data.moveItemsAsync(dialogEvent.message, (count) => {
+                            dialog.close();
+                            event.completed();
+                        }, (message) => {
+                            // no-op...
+                            dialog.close();
+                            event.completed();
+                        });
+                    });
+
+                    dialog.addEventHandler(Office.EventType.DialogEventReceived, () => {
+                        event.completed();
+                    });
                 });
+            }, (progress) => {
+                // no-op...
+            }, (message) => {
+                event.completed();
             });
         };
 
@@ -29,23 +55,25 @@ Office.initialize = function () {
     }
 
     // Show the UI...
-    const mailbox = (Office.context || ({} as Office.Context)).mailbox;
-    let onComplete: () => void;
+    let onComplete: (folderId: string) => void;
+    let storedResults: Data.Match[];
 
-    if (mailbox && /dialog\.html(\?.*)?$/i.test(window.location.pathname)) {
+    if (/dialog\.html(\?.*)?$/i.test(window.location.pathname)) {
         // When we finish moving the items, we want to dismiss the dialog and complete the callback
-        onComplete = () => {
-            Office.context.ui.messageParent(true);
+        onComplete = (folderId: string) => {
+            Office.context.ui.messageParent(folderId);
         };
+
+        storedResults = JSON.parse(window.localStorage.getItem(storageKey)) as Data.Match[];
     }
 
     ReactDOM.render(
-        <ConversationFiler mailbox={mailbox} onComplete={onComplete} />,
+        <ConversationFiler mailbox={mailbox} onComplete={onComplete} storedResults={storedResults} />,
         document.getElementById("conversationFilerRoot")
     );
 
     // ...and if we're running outside of an Outlook client, run through the tests
-    if (!mailbox) {
+    if (!mailbox && !storedResults) {
         let testEmpty = function () {
             console.log("Testing the behavior with an empty set of matches...");
 
@@ -56,7 +84,7 @@ Office.initialize = function () {
             );
 
             ReactDOM.render(
-                <ConversationFiler mailbox={null} mockResults={[]} />,
+                <ConversationFiler mailbox={null} storedResults={[]} />,
                 document.getElementById("conversationFilerRoot")
             );
 
@@ -72,7 +100,7 @@ Office.initialize = function () {
                 document.getElementById("conversationFilerRoot")
             );
 
-            let mockResults: Data.Match[] = [{
+            const dummyResults: Data.Match[] = [{
                     folder: {
                         Id: 'folderId1',
                         DisplayName: 'Folder 1'
@@ -99,7 +127,7 @@ Office.initialize = function () {
                 }];
 
             ReactDOM.render(
-                <ConversationFiler mailbox={null} mockResults={mockResults} />,
+                <ConversationFiler mailbox={null} storedResults={dummyResults} />,
                 document.getElementById("conversationFilerRoot")
             );
         }
