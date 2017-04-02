@@ -39,11 +39,11 @@ Office.initialize = function () {
 
                 console.log('Showing the dialog...');
 
+                mailbox.item.notificationMessages.removeAsync(notificationKey);
                 window.localStorage.setItem(storageKey, JSON.stringify(results));
                 Office.context.ui.displayDialogAsync(window.location.href.replace(functionsRegex, "dialog.html"), { height: 25, width: 50, displayInIframe: true }, (result) => {
                     const dialog = result.value as Office.DialogHandler;
                     const onDialogComplete = (closed: Boolean) => {
-                        mailbox.item.notificationMessages.removeAsync(notificationKey);
                         window.localStorage.removeItem(storageKey);
 
                         if (!closed) {
@@ -63,6 +63,10 @@ Office.initialize = function () {
                         }, (message) => {
                             console.log(`Error moving the items: ${message}`);
 
+                            mailbox.item.notificationMessages.replaceAsync(notificationKey, {
+                                type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
+                                message: `Something went wrong, I couldn't move the messages.`
+                            });
                             onDialogComplete(false);
                         });
                     });
