@@ -63,7 +63,7 @@ Office.initialize = function () {
                     });
 
                     dialog.addEventHandler(Office.EventType.DialogEventReceived, () => {
-                        event.completed();
+                        onDialogComplete();
                     });
                 });
             }, (progress) => {
