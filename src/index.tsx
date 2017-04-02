@@ -27,8 +27,9 @@ Office.initialize = function () {
                 console.log(`Loaded the conversation: ${results.length}`);
 
                 if (results.length === 0) {
+                    // Special case for empty results
                     mailbox.item.notificationMessages.replaceAsync(notificationKey, {
-                        type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
+                        type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
                         message: `It looks like you haven't filed this conversation anywhere before.`
                     });
                     event.completed();
@@ -41,10 +42,14 @@ Office.initialize = function () {
                 window.localStorage.setItem(storageKey, JSON.stringify(results));
                 Office.context.ui.displayDialogAsync(window.location.href.replace(functionsRegex, "dialog.html"), { height: 25, width: 50, displayInIframe: true }, (result) => {
                     const dialog = result.value as Office.DialogHandler;
-                    const onDialogComplete = () => {
-                        dialog.close();
-                        window.localStorage.removeItem(storageKey);
+                    const onDialogComplete = (closed: Boolean) => {
                         mailbox.item.notificationMessages.removeAsync(notificationKey);
+                        window.localStorage.removeItem(storageKey);
+
+                        if (!closed) {
+                            dialog.close();
+                        }
+
                         event.completed();
                     };
 
@@ -54,16 +59,16 @@ Office.initialize = function () {
                         data.moveItemsAsync(dialogEvent.message, (count) => {
                             console.log(`Finished moving the items: ${count}`);
 
-                            onDialogComplete();
+                            onDialogComplete(false);
                         }, (message) => {
                             console.log(`Error moving the items: ${message}`);
 
-                            onDialogComplete();
+                            onDialogComplete(false);
                         });
                     });
 
                     dialog.addEventHandler(Office.EventType.DialogEventReceived, () => {
-                        onDialogComplete();
+                        onDialogComplete(true);
                     });
                 });
             }, (progress) => {
@@ -82,6 +87,7 @@ Office.initialize = function () {
                     type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
                     message: `Sorry, I couldn't figure out where this message should go.`
                 });
+
                 event.completed();
             });
         };
