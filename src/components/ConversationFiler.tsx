@@ -4,8 +4,7 @@ import * as React from "react";
 import * as JQuery from "jquery";
 
 import { Data } from "../Data/Model"
-import { RESTData } from "../Data/RESTData";
-import { EWSData } from "../Data/EWSData";
+import { Factory } from "../Data/Factory";
 
 import { StatusMessage } from "./StatusMessage";
 import { SearchResults } from "./SearchResults";
@@ -44,9 +43,7 @@ export class ConversationFiler extends React.Component<ConversationFilerProps, C
             return;
         }
 
-        const data = this.props.mailbox.restUrl
-            ? new RESTData.Model(this.props.mailbox)
-            : new EWSData.Model(this.props.mailbox);
+        const data = Factory.getData(this.props.mailbox);
 
         this.setState({ data: data });
 

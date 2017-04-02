@@ -2,10 +2,11 @@
   "name": "conversation-filer",
   "version": "1.0.0",
   "description": "React.js port of the Conversation Filer Agave",
-  "main": "bundle.js",
+  "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --optimize-minimize",
-    "start": "webpack-dev-server --open --watch"
+    "start": "webpack-dev-server --open --watch",
+    "test": "jest"
   },
   "keywords": [
     "Agave",
@@ -17,19 +18,33 @@
     "type": "git",
     "url": "https://github.com/wravery/ConversationFiler.git"
   },
-  "dependencies": {
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
   },
+  "dependencies": {},
   "devDependencies": {
+    "@types/jest": "^19.2.2",
     "@types/jquery": "^2.0.41",
     "@types/office-js": "0.0.40",
     "@types/react": "^15.0.20",
     "@types/react-dom": "^0.14.23",
+    "@types/react-test-renderer": "^15.4.3",
     "awesome-typescript-loader": "^3.1.2",
     "jest": "^19.0.2",
     "jquery": "^3.2.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-test-renderer": "^15.4.2",
     "source-map-loader": "^0.2.0",
+    "ts-jest": "^19.0.6",
     "typescript": "^2.2.2",
     "webpack": "^2.3.2",
     "webpack-dev-server": "^2.4.2"

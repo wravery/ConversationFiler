@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusMessage (Loading) 1`] = `
+<h3>
+  Looking for other messages in this conversation...
+</h3>
+`;
+
+exports[`StatusMessage (NotFound) 1`] = `
+<h3>
+  It looks like you haven't filed this conversation anywhere before.
+</h3>
+`;
+
+exports[`StatusMessage (Success) 1`] = `null`;

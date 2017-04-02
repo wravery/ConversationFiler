@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchResults onSelection callback should work 1`] = `null`;
+
+exports[`SearchResults should render 1`] = `
+<table>
+  <thead>
+    <tr>
+      <th>
+        Folder
+      </th>
+      <th>
+        From
+      </th>
+      <th>
+        To
+      </th>
+      <th>
+        Preview
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a
+          name="folderId1"
+          onClick={[Function]}
+        >
+          Folder 1
+        </a>
+      </td>
+      <td>
+        Foo Bar
+      </td>
+      <td>
+        Baz Bar
+      </td>
+      <td>
+        Here's a preview of a message body
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          name="folderId2"
+          onClick={[Function]}
+        >
+          Folder 2
+        </a>
+      </td>
+      <td>
+        Baz Bar
+      </td>
+      <td>
+        Foo Bar
+      </td>
+      <td>
+        Here's another message body
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
