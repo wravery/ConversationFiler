@@ -1,4 +1,4 @@
-/// <reference path="../_references.ts" />
+/// <reference path="../../node_modules/@types/office-js/index.d.ts" />
 
 import { Data } from "./Model";
 import { RESTData } from "./RESTData";
