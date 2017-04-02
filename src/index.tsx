@@ -19,24 +19,45 @@ Office.initialize = function () {
         // Add the UI-less function callback if we're loaded from functions.html instead of index.html
         (window as any).fileDialog = function (event: any) {
             const data = Factory.getData(mailbox);
+            const notificationKey = 'conversationFilerNotification';
+
+            console.log('Starting to load the conversation...');
 
             data.getItemsAsync((results) => {
-                window.localStorage.setItem(storageKey, JSON.stringify(results));
+                console.log(`Loaded the conversation: ${results.length}`);
 
+                if (results.length === 0) {
+                    mailbox.item.notificationMessages.replaceAsync(notificationKey, {
+                        type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
+                        message: `It looks like you haven't filed this conversation anywhere before.`
+                    });
+                    event.completed();
+
+                    return;
+                }
+
+                console.log('Showing the dialog...');
+
+                window.localStorage.setItem(storageKey, JSON.stringify(results));
                 Office.context.ui.displayDialogAsync(window.location.href.replace(functionsRegex, "dialog.html"), { height: 25, width: 50, displayInIframe: true }, (result) => {
                     const dialog = result.value as Office.DialogHandler;
-
                     const onDialogComplete = () => {
                         dialog.close();
                         window.localStorage.removeItem(storageKey);
+                        mailbox.item.notificationMessages.removeAsync(notificationKey);
                         event.completed();
                     };
 
                     dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
+                        console.log('Moving the items...');
+
                         data.moveItemsAsync(dialogEvent.message, (count) => {
+                            console.log(`Finished moving the items: ${count}`);
+
                             onDialogComplete();
                         }, (message) => {
-                            // no-op...
+                            console.log(`Error moving the items: ${message}`);
+
                             onDialogComplete();
                         });
                     });
@@ -46,8 +67,21 @@ Office.initialize = function () {
                     });
                 });
             }, (progress) => {
-                // no-op...
+                console.log(`Progress loading the conversation: ${Data.Progress[progress]}`);
+
+                // Update the progress indicator
+                mailbox.item.notificationMessages.replaceAsync(notificationKey, {
+                    type: Office.MailboxEnums.ItemNotificationMessageType.ProgressIndicator,
+                    message: 'Finding the messages in this conversation...'
+                });
             }, (message) => {
+                console.log(`Error loading the conversation: ${message}`);
+
+                // Display an error
+                mailbox.item.notificationMessages.replaceAsync(notificationKey, {
+                    type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
+                    message: `Sorry, I couldn't figure out where this message should go.`
+                });
                 event.completed();
             });
         };
