@@ -25,7 +25,7 @@ but if you have Outlook 2016 or later it will use the new mechanism to integrate
 and notifications in the mail form, so going forward I'll be able to make the App show warnings and errors without even opening any new
 UI surfaces.
 
-The [manifest](./ConversationFiler.xml) file and npm build/test scripts still need some work, but if you do want to try running your
-own instance of the App you can clone the repo, repoint all of the URLs in the manifest to your (HTTPS) endpoint, and then import the
-App from the manifest file in the Manage Addins section of the Outlook Web Access settings pages. If you had v1.0 instsalled, this should
-overwrite it (but still work just as well, albeit with some missing icons) because it has the same name and GUID identifier.
+The [manifest](./ConversationFiler.xml) file still needs some work, but if you do want to try running your own instance of the App you can
+clone the repo, repoint all of the URLs in the manifest to your (HTTPS) endpoint, and then import the App from the manifest file in the
+Manage Addins section of the Outlook Web Access settings pages. If you had v1.0 instsalled, this should overwrite it because it has the
+same name and GUID identifier.
