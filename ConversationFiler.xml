@@ -11,8 +11,8 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Conversation Filer" />
   <Description DefaultValue="Automatically suggest filing messages out of the Inbox based on previously filed messages in the conversation."/>
-  <IconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/MailAutoFilerLogo.png" />
-  <HighResolutionIconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/MailAutoFilerLogo.png" />
+  <IconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/ConversationFilerLogo.png" />
+  <HighResolutionIconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/ConversationFilerLogo.png" />
   <Hosts>
     <Host Name="Mailbox" />
   </Hosts>
@@ -25,9 +25,6 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <!-- NOTE: Just reusing the read taskpane page that is invoked by the button
-             on the ribbon in clients that support add-in commands. You can 
-             use a completely different page if desired -->
         <SourceLocation DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/index.html" />
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
@@ -35,10 +32,7 @@
   </FormSettings>
   <Permissions>ReadWriteMailbox</Permissions>
   <Rule xsi:type="RuleCollection" Mode="And">
-    <!-- To add more complex rules, add additional rule elements -->
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
-    <!-- E.g. To activate when a message contains an address -->
-    <!-- <Rule xsi:type="ItemHasKnownEntity" EntityType="Address" /> -->
     <!-- Only RE: or FW: subjects -->
     <Rule xsi:type="RuleCollection" Mode="Or">
       <Rule xsi:type="ItemHasRegularExpressionMatch" PropertyName="Subject" IgnoreCase="true" RegExName="fwRule" RegExValue="^fwd?:"/>
@@ -73,9 +67,9 @@
                     <Description resid="funcReadSuperTipDescription" />
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="blue-icon-16" />
-                    <bt:Image size="32" resid="blue-icon-32" />
-                    <bt:Image size="80" resid="blue-icon-80" />
+                    <bt:Image size="16" resid="file-icon-16" />
+                    <bt:Image size="32" resid="file-icon-32" />
+                    <bt:Image size="80" resid="file-icon-80" />
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
                     <FunctionName>fileDialog</FunctionName>
@@ -91,16 +85,16 @@
 
     <Resources>
       <bt:Images>
-        <!-- Blue icon -->
-        <bt:Image id="blue-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-16.png"/>
-        <bt:Image id="blue-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-32.png"/>
-        <bt:Image id="blue-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-80.png"/>
+        <!-- File icon -->
+        <bt:Image id="file-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-16.png"/>
+        <bt:Image id="file-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-32.png"/>
+        <bt:Image id="file-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-80.png"/>
       </bt:Images>
       <bt:Urls>
         <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Conversation Filer"/>
+        <bt:String id="groupLabel" DefaultValue="Conversation"/>
 
         <!-- Read mode -->
         <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
@@ -139,9 +133,9 @@
                       <Description resid="funcReadSuperTipDescription" />
                     </Supertip>
                     <Icon>
-                      <bt:Image size="16" resid="blue-icon-16" />
-                      <bt:Image size="32" resid="blue-icon-32" />
-                      <bt:Image size="80" resid="blue-icon-80" />
+                      <bt:Image size="16" resid="file-icon-16" />
+                      <bt:Image size="32" resid="file-icon-32" />
+                      <bt:Image size="80" resid="file-icon-80" />
                     </Icon>
                     <Action xsi:type="ExecuteFunction">
                       <FunctionName>fileDialog</FunctionName>
@@ -162,17 +156,17 @@
                 <Control xsi:type="MobileButton" id="mblReadFunctionButton">
                   <Label resid="funcReadButtonLabel" />
                   <Icon xsi:type="bt:MobileIconList">
-                    <bt:Image size="25" scale="1" resid="blue-icon-32" />
-                    <bt:Image size="25" scale="2" resid="blue-icon-32" />
-                    <bt:Image size="25" scale="3" resid="blue-icon-32" />
+                    <bt:Image size="25" scale="1" resid="file-icon-32" />
+                    <bt:Image size="25" scale="2" resid="file-icon-32" />
+                    <bt:Image size="25" scale="3" resid="file-icon-32" />
 
-                    <bt:Image size="32" scale="1" resid="blue-icon-32" />
-                    <bt:Image size="32" scale="2" resid="blue-icon-32" />
-                    <bt:Image size="32" scale="3" resid="blue-icon-32" />
+                    <bt:Image size="32" scale="1" resid="file-icon-32" />
+                    <bt:Image size="32" scale="2" resid="file-icon-32" />
+                    <bt:Image size="32" scale="3" resid="file-icon-32" />
 
-                    <bt:Image size="48" scale="1" resid="blue-icon-32" />
-                    <bt:Image size="48" scale="2" resid="blue-icon-32" />
-                    <bt:Image size="48" scale="3" resid="blue-icon-32" />
+                    <bt:Image size="48" scale="1" resid="file-icon-32" />
+                    <bt:Image size="48" scale="2" resid="file-icon-32" />
+                    <bt:Image size="48" scale="3" resid="file-icon-32" />
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
                     <FunctionName>fileDialog</FunctionName>
@@ -186,16 +180,16 @@
 
       <Resources>
         <bt:Images>
-          <!-- Blue icon -->
-          <bt:Image id="blue-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-16.png"/>
-          <bt:Image id="blue-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-32.png"/>
-          <bt:Image id="blue-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/assets/images/blue-80.png"/>
+          <!-- File icon -->
+          <bt:Image id="file-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-16.png"/>
+          <bt:Image id="file-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-32.png"/>
+          <bt:Image id="file-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-80.png"/>
         </bt:Images>
         <bt:Urls>
           <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
         </bt:Urls>
         <bt:ShortStrings>
-          <bt:String id="groupLabel" DefaultValue="Conversation Filer"/>
+          <bt:String id="groupLabel" DefaultValue="Conversation"/>
 
           <!-- Read mode -->
           <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
