@@ -29,25 +29,25 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
                 name: 'Folder',
                 fieldName: null,
                 onRender: this.onRenderLink,
-                minWidth: 50
+                minWidth: 5
             }, {
                 key: 'Sender',
                 name: 'From',
                 fieldName: null,
                 onRender: this.onRenderColumn,
-                minWidth: 100
+                minWidth: 10
             }, {
                 key: 'ToRecipients',
                 name: 'To',
                 fieldName: null,
                 onRender: this.onRenderColumn,
-                minWidth: 100
+                minWidth: 10
             }, {
                 key: 'BodyPreview',
                 name: 'Preview',
                 fieldName: null,
                 onRender: this.onRenderColumn,
-                minWidth: 200
+                minWidth: 50
             }];
 
         return (<div>
@@ -65,7 +65,7 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
     }
 
     private onRenderLink(item: Data.Match) {
-        return <Link href={item.folder.Id}>{item.folder.DisplayName}</Link>;
+        return <Link onClick={this.onClickFolder} name={item.folder.Id}>{item.folder.DisplayName}</Link>;
     }
 
     private onRenderColumn(item: Data.Match, index: number, column: IColumn) {
