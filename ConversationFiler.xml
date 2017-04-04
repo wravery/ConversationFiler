@@ -94,10 +94,10 @@
         <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Conversation"/>
+        <bt:String id="groupLabel" DefaultValue="Filer"/>
 
         <!-- Read mode -->
-        <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
+        <bt:String id="funcReadButtonLabel" DefaultValue="Conversation"/>
         <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
       </bt:ShortStrings>
       <bt:LongStrings>
@@ -189,10 +189,10 @@
           <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
         </bt:Urls>
         <bt:ShortStrings>
-          <bt:String id="groupLabel" DefaultValue="Conversation"/>
+          <bt:String id="groupLabel" DefaultValue="Filer"/>
 
           <!-- Read mode -->
-          <bt:String id="funcReadButtonLabel" DefaultValue="File"/>
+          <bt:String id="funcReadButtonLabel" DefaultValue="Conversation"/>
           <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
         </bt:ShortStrings>
         <bt:LongStrings>

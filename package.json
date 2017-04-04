@@ -29,7 +29,9 @@
       "js"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "office-ui-fabric-react": "^2.10.5"
+  },
   "devDependencies": {
     "@types/jest": "^19.2.2",
     "@types/jquery": "^2.0.41",

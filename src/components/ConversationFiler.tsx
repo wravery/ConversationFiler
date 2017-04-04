@@ -26,20 +26,22 @@ interface ConversationFilerState {
 export class ConversationFiler extends React.Component<ConversationFilerProps, ConversationFilerState> {
     constructor(props: ConversationFilerProps) {
         super(props);
-        this.state = { progress: Data.Progress.GetCallbackToken };
+        this.onSelection = this.onSelection.bind(this);
+
+        if (this.props.storedResults) {
+            if (this.props.storedResults.length > 0) {
+                this.state = { progress: Data.Progress.Success, matches: this.props.storedResults };
+            } else {
+                this.state = { progress: Data.Progress.NotFound };
+            }
+        } else {
+            this.state = { progress: Data.Progress.GetCallbackToken };
+        }
     }
 
     // Start the chain of requests by getting a callback token.
     componentDidMount() {
-        if (this.props.storedResults) {
-            if (this.props.storedResults.length > 0) {
-                this.setState({ progress: Data.Progress.Success, matches: this.props.storedResults });
-            } else {
-                this.setState({ progress: Data.Progress.NotFound });
-            }
-
-            return;
-        } else if (!this.props.mailbox) {
+        if (!this.props.mailbox) {
             return;
         }
 
@@ -84,7 +86,7 @@ export class ConversationFiler extends React.Component<ConversationFilerProps, C
     render() {
         return (<div>
             <StatusMessage progress={this.state.progress} message={this.state.error} />
-            <SearchResults matches={this.state.matches} onSelection={this.onSelection.bind(this)} />
+            <SearchResults matches={this.state.matches} onSelection={this.onSelection} />
             <Feedback />
         </div>);
     }
