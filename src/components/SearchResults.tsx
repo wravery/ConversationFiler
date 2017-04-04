@@ -50,7 +50,7 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
                 fieldName: null,
                 onRender: this.onRenderColumn,
                 columnActionsMode: ColumnActionsMode.disabled,
-                minWidth: 200
+                minWidth: 450
             }];
 
         return (<div>
@@ -67,7 +67,7 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
     }
 
     private onClickFolder(evt: React.MouseEvent<HTMLAnchorElement>) {
-        this.props.onSelection(evt.currentTarget.href);
+        this.props.onSelection(evt.currentTarget.name);
         evt.preventDefault();
     }
 
