@@ -2,6 +2,7 @@
 /// <reference path="../../node_modules/@types/react-test-renderer/index.d.ts" />
 
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import { Data } from "../Data/Model";
@@ -39,26 +40,37 @@ test("SearchResults should render", () => {
         fail('Just rendering the dummy data should not invoke a callback.');
     };
 
-    const component = TestUtils.renderIntoDocument(
-        <SearchResults matches={dummyResults} onSelection={onSelection} />
-    ) as React.ReactInstance;
-    //const tree = component.toJSON();
-    //expect(tree).toMatchSnapshot();
+    const component = TestUtils.renderIntoDocument(<SearchResults matches={dummyResults} onSelection={onSelection} />) as SearchResults;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
 });
 
 test("SearchResults onSelection callback should work", () => {
     const folderId = 'folderId3';
     let selectedId: string = null;
 
-    const onSelection = (selected: string) => {
+    const dummyResults: Data.Match[] = [{
+        folder: {
+            Id: 'folderId3',
+            DisplayName: 'Folder 3'
+        },
+        message: {
+            Id: 'messageId3',
+            BodyPreview: 'Click Me!',
+            Sender: 'Foo Bar',
+            ToRecipients: 'Baz Bar',
+            ParentFolderId: 'folderId3'
+        }
+    }];
+
+   const onSelection = (selected: string) => {
         selectedId = selected;
     };
 
-    const element = <SearchResults matches={[]} onSelection={onSelection} />;
-    const component = TestUtils.renderIntoDocument(element) as React.ReactInstance;
-    //const tree = component.toJSON();
-    //expect(tree).toMatchSnapshot();
+    const component = TestUtils.renderIntoDocument(<SearchResults matches={dummyResults} onSelection={onSelection} />) as SearchResults;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
 
-    element.props.onSelection(folderId);
+    component.props.onSelection(folderId);
     expect(selectedId).toBe(folderId);
 });

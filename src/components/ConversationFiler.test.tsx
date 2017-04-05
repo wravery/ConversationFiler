@@ -2,6 +2,7 @@
 /// <reference path="../../node_modules/@types/react-test-renderer/index.d.ts" />
 
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import { Data } from "../Data/Model";
@@ -9,15 +10,15 @@ import { Data } from "../Data/Model";
 import { ConversationFiler } from "./ConversationFiler";
 
 test("Loading", () => {
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={null} />) as React.ReactInstance;
-    //const tree = component.toJSON();
-    //expect(tree).toMatchSnapshot();
+    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={null} />) as ConversationFiler;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
 });
 
 test("Empty results", () => {
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={[]} />) as React.ReactInstance;
-    //const tree = component.toJSON();
-    //expect(tree).toMatchSnapshot();
+    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={[]} />) as ConversationFiler;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
 });
 
 test("Dummy data", () => {
@@ -47,24 +48,37 @@ test("Dummy data", () => {
         }
     }];
 
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={dummyResults} />) as React.ReactInstance;
-    //const tree = component.toJSON();
-    //expect(tree).toMatchSnapshot();
+    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={dummyResults} />) as ConversationFiler;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
 });
 
 test("Folder selection callback works", () => {
     const folderId = 'folderId3';
     let selectedId: string = null;
 
+    const dummyResults: Data.Match[] = [{
+        folder: {
+            Id: 'folderId3',
+            DisplayName: 'Folder 3'
+        },
+        message: {
+            Id: 'messageId3',
+            BodyPreview: 'Click Me!',
+            Sender: 'Foo Bar',
+            ToRecipients: 'Baz Bar',
+            ParentFolderId: 'folderId3'
+        }
+    }];
+
     const onComplete = (selected: string) => {
         selectedId = selected;
     };
 
-    const element = <ConversationFiler mailbox={null} storedResults={[]} onComplete={onComplete} />;
-    const component = TestUtils.renderIntoDocument(element) as React.ReactInstance;
-    //const tree = component.toJSON();
-    //expect(tree).toMatchSnapshot();
+    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={dummyResults} onComplete={onComplete} />) as ConversationFiler;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
 
-    element.props.onComplete(folderId);
+    component.props.onComplete(folderId);
     expect(selectedId).toBe(folderId);
 });
