@@ -50,6 +50,11 @@ export module AppFunctions {
                     data.moveItemsAsync(dialogEvent.message, (count) => {
                         console.log(`Finished moving the items: ${count}`);
 
+                        mailbox.item.notificationMessages.replaceAsync(notificationKey, {
+                            type: Office.MailboxEnums.ItemNotificationMessageType.ProgressIndicator,
+                            message: 'I moved the items in this conversation, but there might be a short delay before that shows up in Outlook.'
+                        });
+
                         onDialogComplete();
                     }, (message) => {
                         console.log(`Error moving the items: ${message}`);
