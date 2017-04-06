@@ -2,7 +2,7 @@
 
 exports[`Feedback (static content) 1`] = `
 <div
-  className="feedback"
+  className="feedback ms-font-s"
 >
   <a
     href="https://beandotnet.azurewebsites.net/"

@@ -17,18 +17,19 @@ export class StatusMessage extends React.Component<StatusMessageProps, undefined
             case Data.Progress.GetConversation:
             case Data.Progress.GetExcludedFolders:
             case Data.Progress.GetFolderNames:
-                return <h3>Looking for other messages in this conversation...</h3>;
+                return <span className="ms-font-l">Looking for other messages in this conversation...</span>;
 
             case Data.Progress.Success:
                 return null;
 
             case Data.Progress.NotFound:
-                return <h3>It looks like you haven't filed this conversation anywhere before.</h3>;
+                return <span className="ms-font-l">It looks like you haven't filed this conversation anywhere before.</span>;
 
             default:
                 return (<div>
-                    <h3>Sorry, I couldn't figure out where this message should go. :(</h3>
-                    <span>{this.props.message}</span>
+                    <span className="ms-font-l">Sorry, I couldn't figure out where this message should go. :(</span>
+                    <br />
+                    <span className="ms-font-m">{this.props.message}</span>
                 </div>);
         }
     }
