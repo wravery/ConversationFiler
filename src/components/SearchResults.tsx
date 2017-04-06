@@ -29,27 +29,31 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
                 fieldName: null,
                 onRender: this.onRenderLink,
                 columnActionsMode: ColumnActionsMode.disabled,
-                minWidth: 100
+                minWidth: 100,
+                maxWidth: 200
             }, {
                 key: 'Sender',
                 name: 'From',
                 fieldName: null,
                 onRender: this.onRenderColumn,
                 columnActionsMode: ColumnActionsMode.disabled,
-                minWidth: 150
+                minWidth: 150,
+                maxWidth: 300
             }, {
                 key: 'ToRecipients',
                 name: 'To',
                 fieldName: null,
                 onRender: this.onRenderColumn,
                 columnActionsMode: ColumnActionsMode.disabled,
-                minWidth: 150
+                minWidth: 150,
+                maxWidth: 300
             }, {
                 key: 'BodyPreview',
                 name: 'Preview',
                 fieldName: null,
                 onRender: this.onRenderColumn,
                 columnActionsMode: ColumnActionsMode.disabled,
+                isMultiline: true,
                 minWidth: 450
             }];
 

@@ -33,23 +33,24 @@ export module AppFunctions {
             Pages.populateDialog(results);
             Office.context.ui.displayDialogAsync(Pages.getDialogUrl(), { height: 25, width: 50, displayInIframe: true }, (result) => {
                 const dialog = <Office.DialogHandler>result.value;
-                const onDialogComplete = (closed: boolean) => {
+                const onDialogComplete = () => {
                     Pages.resetDialog();
-
-                    if (!closed) {
-                        dialog.close();
-                    }
-
                     event.completed();
                 };
 
                 dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
                     console.log('Moving the items...');
 
+                    dialog.close();
+                    mailbox.item.notificationMessages.replaceAsync(notificationKey, {
+                        type: Office.MailboxEnums.ItemNotificationMessageType.ProgressIndicator,
+                        message: 'Moving the items in this conversation...'
+                    });
+
                     data.moveItemsAsync(dialogEvent.message, (count) => {
                         console.log(`Finished moving the items: ${count}`);
 
-                        onDialogComplete(false);
+                        onDialogComplete();
                     }, (message) => {
                         console.log(`Error moving the items: ${message}`);
 
@@ -57,12 +58,12 @@ export module AppFunctions {
                             type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
                             message: `Something went wrong, I couldn't move the messages.`
                         });
-                        onDialogComplete(false);
+                        onDialogComplete();
                     });
                 });
 
                 dialog.addEventHandler(Office.EventType.DialogEventReceived, () => {
-                    onDialogComplete(true);
+                    onDialogComplete();
                 });
             });
         }, (progress) => {
