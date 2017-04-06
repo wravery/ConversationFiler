@@ -1,5 +1,3 @@
-/// <reference path="../node_modules/@types/office-js/index.d.ts" />
-
 import { Pages } from "./pages";
 
 import { Data } from "./Data/Model";
