@@ -53,7 +53,8 @@ export module AppFunctions {
                         mailbox.item.notificationMessages.replaceAsync(notificationKey, {
                             type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
                             message: 'I moved the items in this conversation, but there might be a short delay before that shows up in Outlook.',
-                            icon: 'file-icon-16'
+                            icon: 'file-icon-16',
+                            persistent: false
                         });
 
                         onDialogComplete();
