@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchResults onSelection callback should work 1`] = `"<h3>I found some items in this conversation filed in other folders. Click on one of the folders listed here to automatically reunite this part of the conversation with the ones that came before:</h3><div class=\\"ms-Viewport\\" style=\\"min-width: 1px; min-height: 1px;\\"></div>"`;
+exports[`SearchResults onSelection callback should work 1`] = `"<span class=\\"ms-font-l\\">I found some items in this conversation filed in other folders. Click on one of the folders listed here to automatically reunite this part of the conversation with the ones that came before:</span><br><div class=\\"ms-Viewport\\" style=\\"min-width: 1px; min-height: 1px;\\"></div>"`;
 
-exports[`SearchResults should render 1`] = `"<h3>I found some items in this conversation filed in other folders. Click on one of the folders listed here to automatically reunite this part of the conversation with the ones that came before:</h3><div class=\\"ms-Viewport\\" style=\\"min-width: 1px; min-height: 1px;\\"></div>"`;
+exports[`SearchResults should render 1`] = `"<span class=\\"ms-font-l\\">I found some items in this conversation filed in other folders. Click on one of the folders listed here to automatically reunite this part of the conversation with the ones that came before:</span><br><div class=\\"ms-Viewport\\" style=\\"min-width: 1px; min-height: 1px;\\"></div>"`;

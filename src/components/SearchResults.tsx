@@ -58,10 +58,11 @@ export class SearchResults extends React.Component<SearchResultsProps, undefined
             }];
 
         return (<div>
-            <h3>
+            <span className="ms-font-l">
                 I found some items in this conversation filed in other folders. Click on one of the folders listed here to
                 automatically reunite this part of the conversation with the ones that came before:
-            </h3>
+            </span>
+            <br />
             <DetailsList
                 columns={columns}
                 items={this.props.matches}
