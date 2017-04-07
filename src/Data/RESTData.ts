@@ -136,6 +136,8 @@ export module RESTData {
 
             this.conversationMessages = result.value;
 
+            console.log(`Messages in the conversation: ${this.conversationMessages.length}`);
+
             // Get the current folderId.
             const currentFolderId = this.conversationMessages
                 .filter(value => value.Id === this.itemId)
@@ -228,8 +230,10 @@ export module RESTData {
                     }
                 });
 
-                const matches = folderMap.reduce((previousValue: Data.Match[], currentValue) => {
-                    previousValue.push.apply(currentValue.messages.map(item => <Data.Match>({
+                console.log(`Found ${folderMap.reduce((previousValue, currentValue) => previousValue + currentValue.messages.length, 0)} message(s) in ${folderMap.length} folder(s)`);
+
+                const matches = folderMap.reduce((previousValue: Data.Match[], currentValue) =>
+                    previousValue.concat(currentValue.messages.map(item => (<Data.Match>{
                         message: {
                             Id: item.Id,
                             BodyPreview: item.BodyPreview,
@@ -241,12 +245,9 @@ export module RESTData {
                             Id: currentValue.folder.Id,
                             DisplayName: currentValue.folder.DisplayName
                         }
-                    })));
+                    }))), []);
 
-                    return previousValue;
-                }, []);
-
-                console.log(`Finished loading items in other folders: ${matches.length}`);
+                console.log(`Finished loading items: ${matches.length}`);
                 this.onLoadComplete(Data.removeDuplicates(matches, this.itemId));
             }, (message: string) => {
                 this.onError(message);
