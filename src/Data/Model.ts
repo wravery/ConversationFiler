@@ -39,25 +39,33 @@ export module Data {
                 .pop();
 
             if (item) {
+                console.log(`Removing duplicates: ${results.length} original message(s)`);
+
                 // Find all of the items in the same folder, we want to remove all of their duplicates.
                 const sameFolderItems = results.filter(result => result.message.ParentFolderId === item.message.ParentFolderId);
+
+                console.log(`Messages in the same folder: ${sameFolderItems.length} message(s)`);
 
                 // Remove all items that are either in the same folder or match an item in the same folder.
                 results = results.filter(result => {
                     if (result.message.ParentFolderId === item.message.ParentFolderId) {
+                        console.log(`Removed message in the same folder: ${item.message.Id}`);
                         return false;
                     }
 
-                    return !sameFolderItems.reduce((previousValue, value) => {
-                        if (previousValue) {
-                            return true;
-                        }
-
-                        return result.message.Sender === value.message.Sender &&
+                    const isDuplicate = sameFolderItems.reduce((previousValue, value) => previousValue ||
+                        (result.message.Sender === value.message.Sender &&
                             result.message.ToRecipients === value.message.ToRecipients &&
-                            result.message.BodyPreview === value.message.BodyPreview;
-                    }, false);
+                            result.message.BodyPreview === value.message.BodyPreview), false);
+
+                    if (isDuplicate) {
+                        console.log(`Removed duplicate message in other folder: ${item.message.Id}`);
+                    }
+
+                    return !isDuplicate;
                 });
+
+                console.log(`Remaining in other folders: ${results.length} message(s)`);
             }
         }
 
