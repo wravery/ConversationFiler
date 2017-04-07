@@ -32,7 +32,7 @@ export module Data {
         moveItemsAsync(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void): void;
     }
 
-    export function removeDuplicates(results: Match[], itemId: string) {
+    export function removeDuplicates(results: Match[], itemId: string, excludedFolderIds: string[]) {
         if (itemId) {
             const item = results
                 .filter(item => item.message.Id === itemId)
@@ -46,26 +46,40 @@ export module Data {
 
                 console.log(`Messages in the same folder: ${sameFolderItems.length} message(s)`);
 
-                // Remove all items that are either in the same folder or match an item in the same folder.
+                // Remove all items that are in the same folder.
                 results = results.filter(result => {
-                    if (result.message.ParentFolderId === item.message.ParentFolderId) {
-                        console.log(`Removed message in the same folder: ${item.message.Id}`);
+                    if (result.folder.Id === item.message.ParentFolderId) {
+                        console.log(`Removed message in the same folder: ${result.message.Id}`);
                         return false;
+                    } else {
+                        return true;
                     }
-
-                    const isDuplicate = sameFolderItems.reduce((previousValue, value) => previousValue ||
-                        (result.message.Sender === value.message.Sender &&
-                            result.message.ToRecipients === value.message.ToRecipients &&
-                            result.message.BodyPreview === value.message.BodyPreview), false);
-
-                    if (isDuplicate) {
-                        console.log(`Removed duplicate message in other folder: ${item.message.Id}`);
-                    }
-
-                    return !isDuplicate;
                 });
 
-                console.log(`Remaining in other folders: ${results.length} message(s)`);
+                // Remove all items that are in another excluded folder.
+                results = results.filter(result => {
+                    if (excludedFolderIds.reduce((previousValue, currentValue) => previousValue || currentValue === result.folder.Id, false)) {
+                        console.log(`Removed message in an excluded folder: ${result.message.Id}`);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+
+                // Remove all items that match an item in the same folder.
+                results = results.filter(result => {
+                    if (sameFolderItems.reduce((previousValue, value) => previousValue ||
+                        (result.message.Sender === value.message.Sender &&
+                            result.message.ToRecipients === value.message.ToRecipients &&
+                            result.message.BodyPreview === value.message.BodyPreview), false)) {
+                        console.log(`Removed duplicate message in other folder: ${item.message.Id}`);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+
+                console.log(`Remaining in other folders: ${results.length} distinct message(s)`);
             }
         }
 

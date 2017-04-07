@@ -292,13 +292,8 @@ export module EWSData {
         }
 
         private getMessages() {
-            let $messages = $(this.itemsXml.querySelectorAll('GetItemResponseMessage > Items > Message > ParentFolderId'));
-
-            this.excludedFolders.map(folder => {
-                $messages = $messages.filter(`[Id!="${folder.folderId.id}"]`);
-            });
-
-            $messages = $messages.parent();
+            let $messages = $(this.itemsXml.querySelectorAll('GetItemResponseMessage > Items > Message > ParentFolderId'))
+                .parent();
 
             this.conversation.global.map(item => {
                 for (let i = 0; i < $messages.length; i++) {
@@ -383,7 +378,7 @@ export module EWSData {
             });
 
             console.log(`Finished loading items in other folders: ${matches.length}`);
-            this.onLoadComplete(Data.removeDuplicates(matches, this.itemId));
+            this.onLoadComplete(Data.removeDuplicates(matches, this.itemId, this.excludedFolders.map(value => value.folderId.id)));
         }
 
         moveItems(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void) {

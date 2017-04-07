@@ -179,8 +179,6 @@ export module RESTData {
             };
 
             const folderMap = this.conversationMessages
-                .filter(message => !excludedFolderIds.reduce((previousValue, value) =>
-                    previousValue || value === message.ParentFolderId, false))
                 .reduce((previousValue: folderMapEntry[], message) => {
                     const entry = previousValue
                         .filter(value => value.folder.Id === message.ParentFolderId)
@@ -205,18 +203,21 @@ export module RESTData {
             this.currentFolderId = currentFolderId;
             this.excludedFolderIds = excludedFolderIds;
 
-            const requests = folderMap.map((entry) => {
-                const restUrl = `${this.mailbox.restUrl}${Endpoint}/mailfolders/${entry.folder.Id}?$select=Id,DisplayName`;
+            const requests = folderMap
+                .filter(entry => !this.excludedFolderIds.reduce((previousValue, value) =>
+                    previousValue || value === entry.folder.Id, false))
+                .map((entry) => {
+                    const restUrl = `${this.mailbox.restUrl}${Endpoint}/mailfolders/${entry.folder.Id}?$select=Id,DisplayName`;
 
-                console.log(`Getting included folder name: ${restUrl}`);
+                    console.log(`Getting included folder name: ${restUrl}`);
 
-                return $.ajax({
-                    url: restUrl,
-                    async: true,
-                    dataType: 'json',
-                    headers: { 'Authorization': `Bearer ${this.token}` }
+                    return $.ajax({
+                        url: restUrl,
+                        async: true,
+                        dataType: 'json',
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    });
                 });
-            });
 
             this.onProgress(Data.Progress.GetFolderNames);
 
@@ -230,7 +231,10 @@ export module RESTData {
                     }
                 });
 
-                console.log(`Found ${folderMap.reduce((previousValue, currentValue) => previousValue + currentValue.messages.length, 0)} message(s) in ${folderMap.length} folder(s)`);
+                const messageCount = folderMap.reduce((previousValue, currentValue) => previousValue + currentValue.messages.length, 0);
+                const folderCount = folderMap.length;
+
+                console.log(`Found ${messageCount} message(s) in ${folderCount} folder(s)`);
 
                 const matches = folderMap.reduce((previousValue: Data.Match[], currentValue) =>
                     previousValue.concat(currentValue.messages.map(item => (<Data.Match>{
@@ -248,7 +252,7 @@ export module RESTData {
                     }))), []);
 
                 console.log(`Finished loading items: ${matches.length}`);
-                this.onLoadComplete(Data.removeDuplicates(matches, this.itemId));
+                this.onLoadComplete(Data.removeDuplicates(matches, this.itemId, this.excludedFolderIds));
             }, (message: string) => {
                 this.onError(message);
             });
