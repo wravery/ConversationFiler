@@ -151,8 +151,10 @@ export module EWSData {
 
     class Context {
         constructor(private mailbox: Office.Mailbox) {
+            this.itemId = (<Office.ItemRead>this.mailbox.item).itemId;
         }
 
+        private itemId: string;
         private conversationXml?: XMLDocument;
         private conversation?: ConversationData;
         private excludedFolders?: FolderData[];
@@ -212,15 +214,9 @@ export module EWSData {
                 });
             });
 
-            let $otherFolderItemIds = $conversation.find('GlobalItemIds > ItemId');
-
-            sameFolderItemIds.map(itemId => {
-                $otherFolderItemIds = $otherFolderItemIds.filter(`[Id!="${itemId.id}"]`);
-            });
-
             let otherFolderItemIds: ItemId[] = [];
 
-            $otherFolderItemIds.each(function () {
+            $conversation.find('GlobalItemIds > ItemId').each(function () {
                 const $this = $(this);
 
                 otherFolderItemIds.push({
@@ -229,7 +225,7 @@ export module EWSData {
                 });
             });
 
-            if (!sameFolderItemIds.length || !otherFolderItemIds.length) {
+            if (!sameFolderItemIds.length || otherFolderItemIds.length <= sameFolderItemIds.length) {
                 this.onLoadComplete([]);
                 return;
             }
@@ -387,7 +383,7 @@ export module EWSData {
             });
 
             console.log(`Finished loading items in other folders: ${matches.length}`);
-            this.onLoadComplete(matches);
+            this.onLoadComplete(Data.removeDuplicates(matches, this.itemId));
         }
 
         moveItems(folderId: string, onMoveComplete: (count: number) => void, onError: (message: string) => void) {

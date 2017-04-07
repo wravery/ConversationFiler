@@ -41,8 +41,10 @@ export module RESTData {
 
     class Context {
         constructor(private mailbox: Office.Mailbox) {
+            this.itemId = this.getRestId((<Office.ItemRead>this.mailbox.item).itemId);
         }
 
+        private itemId: string;
         private token?: string;
         private currentFolderId?: string;
         private conversationMessages?: MessageJson[];
@@ -134,22 +136,12 @@ export module RESTData {
 
             this.conversationMessages = result.value;
 
-            let currentFolderId: string;
-            let excludedFolderIds: string[] = [];
+            // Get the current folderId.
+            const currentFolderId = this.conversationMessages
+                .filter(value => value.Id === this.itemId)
+                .reduce((previousValue: string, value) => value.ParentFolderId, undefined);
 
-            // We should ignore any messages in the same folder.
-            const itemId = (<Office.ItemRead>this.mailbox.item).itemId;
-            const restItemId = this.getRestId(itemId);
-
-            for (let i = 0; i < this.conversationMessages.length; ++i) {
-                if (this.conversationMessages[i].Id === restItemId) {
-                    currentFolderId = this.conversationMessages[i].ParentFolderId;
-                    excludedFolderIds.push(currentFolderId);
-                    break;
-                }
-            }
-
-            // We should also exclude some special folders, but we need to get their folderIds.
+            // We should exclude some special folders, but we need to get their folderIds.
             let requests: JQueryXHR[] = [];
 
             for (let i = 0; i < ExcludedFolders.Count; ++i) {
@@ -169,9 +161,7 @@ export module RESTData {
             this.onProgress(Data.Progress.GetExcludedFolders);
 
             this.collateRequests(<JQueryPromise<FolderJson>[]>requests, (results) => {
-                results.map((value) => {
-                    excludedFolderIds.push(value.Id);
-                });
+                const excludedFolderIds = results.map(value => value.Id);
 
                 this.getFolderNames(currentFolderId, excludedFolderIds);
             }, (message) => {
@@ -181,30 +171,29 @@ export module RESTData {
 
         // Send REST requests to fill in the display names of all the folders we are not excluding.
         private getFolderNames(currentFolderId: string, excludedFolderIds: string[]) {
-            let folderMap: {
+            interface folderMapEntry {
                 folder: FolderJson;
                 messages: MessageJson[];
-            }[] = [];
+            };
 
-            this.conversationMessages.map((message: MessageJson) => {
-                for (let i = 0; i < excludedFolderIds.length; ++i) {
-                    if (excludedFolderIds[i] === message.ParentFolderId) {
-                        // Skip this message.
-                        return;
-                    }
-                }
+            const folderMap = this.conversationMessages
+                .filter(message => !excludedFolderIds.reduce((previousValue, value) =>
+                    previousValue || value === message.ParentFolderId, false))
+                .reduce((previousValue: folderMapEntry[], message) => {
+                    const entry = previousValue
+                        .filter(value => value.folder.Id === message.ParentFolderId)
+                        .pop();
 
-                for (let i = 0; i < folderMap.length; ++i) {
-                    if (folderMap[i].folder.Id === message.ParentFolderId) {
+                    if (entry) {
                         // Add this message to the existing entry.
-                        folderMap[i].messages.push(message);
-                        return;
+                        entry.messages.push(message);
+                    } else {
+                        // Create a new entry for this folder.
+                        previousValue.push({ folder: { Id: message.ParentFolderId }, messages: [message] });
                     }
-                }
 
-                // Create a new entry for this folder.
-                folderMap.push({ folder: { Id: message.ParentFolderId }, messages: [message] });
-            });
+                    return previousValue;
+                }, []);
 
             if (folderMap.length === 0) {
                 this.onLoadComplete([]);
@@ -214,7 +203,7 @@ export module RESTData {
             this.currentFolderId = currentFolderId;
             this.excludedFolderIds = excludedFolderIds;
 
-            let requests = folderMap.map((entry) => {
+            const requests = folderMap.map((entry) => {
                 const restUrl = `${this.mailbox.restUrl}${Endpoint}/mailfolders/${entry.folder.Id}?$select=Id,DisplayName`;
 
                 console.log(`Getting included folder name: ${restUrl}`);
@@ -230,7 +219,7 @@ export module RESTData {
             this.onProgress(Data.Progress.GetFolderNames);
 
             this.collateRequests(<JQueryPromise<FolderJson>[]>requests, (results: FolderJson[]) => {
-                results.map((value) => {
+                results.forEach((value) => {
                     for (let i = 0; i < folderMap.length; ++i) {
                         if (folderMap[i].folder.Id === value.Id) {
                             folderMap[i].folder.DisplayName = value.DisplayName;
@@ -239,28 +228,26 @@ export module RESTData {
                     }
                 });
 
-                let matches: Data.Match[] = [];
+                const matches = folderMap.reduce((previousValue: Data.Match[], currentValue) => {
+                    previousValue.push.apply(currentValue.messages.map(item => <Data.Match>({
+                        message: {
+                            Id: item.Id,
+                            BodyPreview: item.BodyPreview,
+                            Sender: item.Sender.EmailAddress.Name,
+                            ToRecipients: item.ToRecipients.map(address => address.EmailAddress.Name).join('; '),
+                            ParentFolderId: item.ParentFolderId
+                        },
+                        folder: {
+                            Id: currentValue.folder.Id,
+                            DisplayName: currentValue.folder.DisplayName
+                        }
+                    })));
 
-                folderMap.map((entry) => {
-                    entry.messages.map((message) => {
-                        matches.push({
-                            message: {
-                                Id: message.Id,
-                                BodyPreview: message.BodyPreview,
-                                Sender: message.Sender.EmailAddress.Name,
-                                ToRecipients: message.ToRecipients.map(address => address.EmailAddress.Name).join('; '),
-                                ParentFolderId: message.ParentFolderId
-                            },
-                            folder: {
-                                Id: entry.folder.Id,
-                                DisplayName: entry.folder.DisplayName
-                            }
-                        });
-                    });
-                });
+                    return previousValue;
+                }, []);
 
                 console.log(`Finished loading items in other folders: ${matches.length}`);
-                this.onLoadComplete(matches);
+                this.onLoadComplete(Data.removeDuplicates(matches, this.itemId));
             }, (message: string) => {
                 this.onError(message);
             });
@@ -272,28 +259,23 @@ export module RESTData {
 
             console.log(`Moving items to folder: ${folderId}`);
 
-            let requests: JQueryXHR[] = [];
+            const requests = this.conversationMessages
+                .filter(message => message.ParentFolderId !== this.currentFolderId)
+                .map(message => {
+                    const restUrl = `${this.mailbox.restUrl}${Endpoint}/messages/${message.Id}/move`;
 
-            this.conversationMessages.map((message: MessageJson) => {
-                if (message.ParentFolderId !== this.currentFolderId) {
-                    // Skip any messages that are not in the current folder.
-                    return;
-                }
+                    console.log(`Moving item: ${restUrl}`);
 
-                const restUrl = `${this.mailbox.restUrl}${Endpoint}/messages/${message.Id}/move`;
-
-                console.log(`Moving item: ${restUrl}`);
-
-                requests.push($.ajax({
-                    url: restUrl,
-                    async: true,
-                    method: 'POST',
-                    contentType: 'application/json',
-                    dataType: 'json',
-                    data: JSON.stringify({ DestinationId: folderId }),
-                    headers: { 'Authorization': `Bearer ${this.token}` }
-                }));
-            });
+                    return $.ajax({
+                        url: restUrl,
+                        async: true,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: JSON.stringify({ DestinationId: folderId }),
+                        headers: { 'Authorization': `Bearer ${this.token}` }
+                    })
+                });
 
             this.collateRequests(<JQueryPromise<MessageJson>[]>requests, (results: MessageJson[]) => {
                 console.log(`Finished moving items to other folder: ${results.length}`);

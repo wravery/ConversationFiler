@@ -17,8 +17,10 @@ export module AppFunctions {
             if (results.length === 0) {
                 // Special case for empty results
                 mailbox.item.notificationMessages.replaceAsync(notificationKey, {
-                    type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
-                    message: `It looks like you haven't filed this conversation anywhere before.`
+                    type: Office.MailboxEnums.ItemNotificationMessageType.InformationalMessage,
+                    message: `It looks like you haven't filed this conversation anywhere before.`,
+                    icon: 'file-icon-16',
+                    persistent: false
                 });
                 event.completed();
 
