@@ -31,7 +31,7 @@ export module AppFunctions {
 
             mailbox.item.notificationMessages.removeAsync(notificationKey);
             Pages.populateDialog(results);
-            Office.context.ui.displayDialogAsync(Pages.getDialogUrl(), { height: 40, width: 30, displayInIframe: true }, (result) => {
+            Office.context.ui.displayDialogAsync(Pages.getDialogUrl(), { height: 40, width: 50, displayInIframe: true }, (result) => {
                 const dialog = <Office.DialogHandler>result.value;
                 const onDialogComplete = () => {
                     Pages.resetDialog();
@@ -39,7 +39,9 @@ export module AppFunctions {
                 };
 
                 dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
-                    if (dialogEvent.message === "") {
+                    const message = <Pages.DialogMessage>JSON.parse(dialogEvent.message);
+
+                    if (message.canceled) {
                         console.log('Dialog canceled');
 
                         dialog.close();
@@ -55,7 +57,7 @@ export module AppFunctions {
                         message: 'Moving the items in this conversation...'
                     });
 
-                    data.moveItemsAsync(dialogEvent.message, (count) => {
+                    data.moveItemsAsync(message.folderId, (count) => {
                         console.log(`Finished moving the items: ${count}`);
 
                         mailbox.item.notificationMessages.replaceAsync(notificationKey, {
@@ -126,7 +128,7 @@ export module AppFunctions {
 
     function sendFeedback(event: any) {
         Office.context.mailbox.displayNewMessageForm({
-            toRecipients: [{ displayName: 'Bill Avery', emailAddress: 'wravery@hotmail.com' }],
+            toRecipients: [ 'Bill Avery <wravery@hotmail.com>' ],
             subject: 'Conversation Filer v2.0 App for Outlook'
         });
 

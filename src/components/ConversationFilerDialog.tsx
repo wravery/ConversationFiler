@@ -36,6 +36,7 @@ export class ConversationFilerDialog extends React.Component<ConversationFilerDi
         return (<div>
             <StatusMessage progress={Data.Progress.Success} />
             <SearchResults matches={this.props.storedResults} onSelection={this.onSelection} />
+            <br />
             <div className="dialogButtons">
                 <DefaultButton
                     ariaDescription="Cancel the operation without moving any items."

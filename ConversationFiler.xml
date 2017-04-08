@@ -60,11 +60,11 @@
               <Group id="msgReadDemoGroup">
                 <Label resid="groupLabel" />
                 <!-- Function (UI-less) button -->
-                <Control xsi:type="Button" id="msgReadFunctionButton">
-                  <Label resid="funcReadButtonLabel" />
+                <Control xsi:type="Button" id="funcFileButton">
+                  <Label resid="funcFileButtonLabel" />
                   <Supertip>
-                    <Title resid="funcReadSuperTipTitle" />
-                    <Description resid="funcReadSuperTipDescription" />
+                    <Title resid="funcFileSuperTipTitle" />
+                    <Description resid="funcFileSuperTipDescription" />
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="file-icon-16" />
@@ -73,6 +73,38 @@
                   </Icon>
                   <Action xsi:type="ExecuteFunction">
                     <FunctionName>fileDialog</FunctionName>
+                  </Action>
+                </Control>
+                <!-- Function (UI-less) button -->
+                <Control xsi:type="Button" id="funcAboutButton">
+                  <Label resid="funcAboutButtonLabel" />
+                  <Supertip>
+                    <Title resid="funcAboutSuperTipTitle" />
+                    <Description resid="funcAboutSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="file-icon-16" />
+                    <bt:Image size="32" resid="file-icon-32" />
+                    <bt:Image size="80" resid="file-icon-80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>aboutDialog</FunctionName>
+                  </Action>
+                </Control>
+                <!-- Function (UI-less) button -->
+                <Control xsi:type="Button" id="funcFeedbackButton">
+                  <Label resid="funcFeedbackButtonLabel" />
+                  <Supertip>
+                    <Title resid="funcFeedbackSuperTipTitle" />
+                    <Description resid="funcFeedbackSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="file-icon-16" />
+                    <bt:Image size="32" resid="file-icon-32" />
+                    <bt:Image size="80" resid="file-icon-80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>sendFeedback</FunctionName>
                   </Action>
                 </Control>
               </Group>
@@ -94,15 +126,21 @@
         <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="groupLabel" DefaultValue="Filer"/>
+        <bt:String id="groupLabel" DefaultValue="Conversation"/>
 
         <!-- Read mode -->
-        <bt:String id="funcReadButtonLabel" DefaultValue="Conversation"/>
-        <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
+        <bt:String id="funcFileButtonLabel" DefaultValue="File"/>
+        <bt:String id="funcFileSuperTipTitle" DefaultValue="File this conversation"/>
+        <bt:String id="funcAboutButtonLabel" DefaultValue="About"/>
+        <bt:String id="funcAboutSuperTipTitle" DefaultValue="About Conversation Filer"/>
+        <bt:String id="funcFeedbackButtonLabel" DefaultValue="Send feedback"/>
+        <bt:String id="funcFeedbackSuperTipTitle" DefaultValue="Send feedback"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <!-- Read mode -->
-        <bt:String id="funcReadSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+        <bt:String id="funcFileSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+        <bt:String id="funcAboutSuperTipDescription" DefaultValue="Show more information about the Conversation Filer App."/>
+        <bt:String id="funcFeedbackSuperTipDescription" DefaultValue="Send feedback about this App to the author."/>
       </bt:LongStrings>
     </Resources>
 
@@ -126,11 +164,11 @@
                 <Group id="msgReadDemoGroup">
                   <Label resid="groupLabel" />
                   <!-- Function (UI-less) button -->
-                  <Control xsi:type="Button" id="msgReadFunctionButton">
-                    <Label resid="funcReadButtonLabel" />
+                  <Control xsi:type="Button" id="funcFileButton">
+                    <Label resid="funcFileButtonLabel" />
                     <Supertip>
-                      <Title resid="funcReadSuperTipTitle" />
-                      <Description resid="funcReadSuperTipDescription" />
+                      <Title resid="funcFileSuperTipTitle" />
+                      <Description resid="funcFileSuperTipDescription" />
                     </Supertip>
                     <Icon>
                       <bt:Image size="16" resid="file-icon-16" />
@@ -139,6 +177,38 @@
                     </Icon>
                     <Action xsi:type="ExecuteFunction">
                       <FunctionName>fileDialog</FunctionName>
+                    </Action>
+                  </Control>
+                  <!-- Function (UI-less) button -->
+                  <Control xsi:type="Button" id="funcAboutButton">
+                    <Label resid="funcAboutButtonLabel" />
+                    <Supertip>
+                      <Title resid="funcAboutSuperTipTitle" />
+                      <Description resid="funcAboutSuperTipDescription" />
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="file-icon-16" />
+                      <bt:Image size="32" resid="file-icon-32" />
+                      <bt:Image size="80" resid="file-icon-80" />
+                    </Icon>
+                    <Action xsi:type="ExecuteFunction">
+                      <FunctionName>aboutDialog</FunctionName>
+                    </Action>
+                  </Control>
+                  <!-- Function (UI-less) button -->
+                  <Control xsi:type="Button" id="funcFeedbackButton">
+                    <Label resid="funcFeedbackButtonLabel" />
+                    <Supertip>
+                      <Title resid="funcFeedbackSuperTipTitle" />
+                      <Description resid="funcFeedbackSuperTipDescription" />
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="file-icon-16" />
+                      <bt:Image size="32" resid="file-icon-32" />
+                      <bt:Image size="80" resid="file-icon-80" />
+                    </Icon>
+                    <Action xsi:type="ExecuteFunction">
+                      <FunctionName>sendFeedback</FunctionName>
                     </Action>
                   </Control>
                 </Group>
@@ -154,7 +224,7 @@
               <Group id="mobileMsgRead">
                 <Label resid="groupLabel" />
                 <Control xsi:type="MobileButton" id="mblReadFunctionButton">
-                  <Label resid="funcReadButtonLabel" />
+                  <Label resid="funcFileButtonLabel" />
                   <Icon xsi:type="bt:MobileIconList">
                     <bt:Image size="25" scale="1" resid="file-icon-32" />
                     <bt:Image size="25" scale="2" resid="file-icon-32" />
@@ -189,15 +259,21 @@
           <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
         </bt:Urls>
         <bt:ShortStrings>
-          <bt:String id="groupLabel" DefaultValue="Filer"/>
+          <bt:String id="groupLabel" DefaultValue="Conversation"/>
 
           <!-- Read mode -->
-          <bt:String id="funcReadButtonLabel" DefaultValue="Conversation"/>
-          <bt:String id="funcReadSuperTipTitle" DefaultValue="File this conversation"/>
+          <bt:String id="funcFileButtonLabel" DefaultValue="File"/>
+          <bt:String id="funcFileSuperTipTitle" DefaultValue="File this conversation"/>
+          <bt:String id="funcAboutButtonLabel" DefaultValue="About"/>
+          <bt:String id="funcAboutSuperTipTitle" DefaultValue="About Conversation Filer"/>
+          <bt:String id="funcFeedbackButtonLabel" DefaultValue="Send feedback"/>
+          <bt:String id="funcFeedbackSuperTipTitle" DefaultValue="Send feedback"/>
         </bt:ShortStrings>
         <bt:LongStrings>
           <!-- Read mode -->
-          <bt:String id="funcReadSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+          <bt:String id="funcFileSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
+          <bt:String id="funcAboutSuperTipDescription" DefaultValue="Show more information about the Conversation Filer App."/>
+          <bt:String id="funcFeedbackSuperTipDescription" DefaultValue="Send feedback about this App to the author."/>
         </bt:LongStrings>
       </Resources>
     </VersionOverrides>

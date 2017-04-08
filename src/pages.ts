@@ -32,11 +32,29 @@ export module Pages {
         storedResults?: Data.Match[];
     }
 
+    export interface DialogMessage {
+        canceled: boolean;
+        folderId?: string;
+    }
+
     export function getUIParameters(): UIParameters {
         if (dialogRegex.test(window.location.pathname)) {
             return {
-                onComplete: folderId => { Office.context.ui.messageParent(folderId); },
-                onCancel: () => { Office.context.ui.messageParent(""); },
+                onComplete: folderId => {
+                    const message: DialogMessage = {
+                        canceled: false,
+                        folderId: folderId
+                    };
+
+                    Office.context.ui.messageParent(JSON.stringify(message));
+                },
+                onCancel: () => {
+                    const message: DialogMessage = {
+                        canceled: true
+                    };
+
+                    Office.context.ui.messageParent(JSON.stringify(message));
+                },
                 storedResults: <Data.Match[]>JSON.parse(window.localStorage.getItem(storageKey))
             };
         }
