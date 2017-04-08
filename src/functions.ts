@@ -128,7 +128,7 @@ export module AppFunctions {
 
     function sendFeedback(event: any) {
         Office.context.mailbox.displayNewMessageForm({
-            toRecipients: [ 'Bill Avery <wravery@hotmail.com>' ],
+            toRecipients: [ 'wravery@hotmail.com' ],
             subject: 'Conversation Filer v2.0 App for Outlook'
         });
 
