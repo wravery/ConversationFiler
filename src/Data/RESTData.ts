@@ -195,11 +195,6 @@ export module RESTData {
                     return previousValue;
                 }, []);
 
-            if (folderMap.length === 0) {
-                this.onLoadComplete([]);
-                return;
-            }
-
             this.currentFolderId = currentFolderId;
             this.excludedFolderIds = excludedFolderIds;
 
@@ -218,6 +213,11 @@ export module RESTData {
                         headers: { 'Authorization': `Bearer ${this.token}` }
                     });
                 });
+
+            if (requests.length === 0) {
+                this.onLoadComplete([]);
+                return;
+            }
 
             this.onProgress(Data.Progress.GetFolderNames);
 
