@@ -4,19 +4,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import { Data } from "../Data/Model";
 
-import { ConversationFiler } from "./ConversationFiler";
-
-test("Loading", () => {
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={null} />) as ConversationFiler;
-    const rendered = ReactDOM.findDOMNode(component);
-    expect(rendered.innerHTML).toMatchSnapshot();
-});
-
-test("Empty results", () => {
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={[]} />) as ConversationFiler;
-    const rendered = ReactDOM.findDOMNode(component);
-    expect(rendered.innerHTML).toMatchSnapshot();
-});
+import { ConversationFilerDialog } from "./ConversationFilerDialog";
 
 test("Dummy data", () => {
     const dummyResults: Data.Match[] = [{
@@ -45,7 +33,15 @@ test("Dummy data", () => {
         }
     }];
 
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={dummyResults} />) as ConversationFiler;
+    const onComplete = (selected: string) => {
+        fail("Just rendering the dialog should not invoke any callbacks");
+    };
+
+    const onCancel = () => {
+        fail("The dialog should not be canceled");
+    }
+
+    const component = TestUtils.renderIntoDocument(<ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />) as ConversationFilerDialog;
     const rendered = ReactDOM.findDOMNode(component);
     expect(rendered.innerHTML).toMatchSnapshot();
 });
@@ -72,10 +68,48 @@ test("Folder selection callback works", () => {
         selectedId = selected;
     };
 
-    const component = TestUtils.renderIntoDocument(<ConversationFiler mailbox={null} storedResults={dummyResults} onComplete={onComplete} />) as ConversationFiler;
+    const onCancel = () => {
+        fail("The dialog should not be canceled");
+    }
+
+    const component = TestUtils.renderIntoDocument(<ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />) as ConversationFilerDialog;
     const rendered = ReactDOM.findDOMNode(component);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     component.props.onComplete(folderId);
     expect(selectedId).toBe(folderId);
+});
+
+test("Cancel button callback works", () => {
+    const folderId = 'folderId3';
+    let canceled = false;
+
+    const dummyResults: Data.Match[] = [{
+        folder: {
+            Id: 'folderId3',
+            DisplayName: 'Folder 3'
+        },
+        message: {
+            Id: 'messageId3',
+            BodyPreview: 'Click Me!',
+            Sender: 'Foo Bar',
+            ToRecipients: 'Baz Bar',
+            ParentFolderId: 'folderId3'
+        }
+    }];
+
+    const onComplete = (selected: string) => {
+        fail("No folder should be selected");
+    };
+
+    const onCancel = () => {
+        canceled = true;
+    }
+
+    const component = TestUtils.renderIntoDocument(<ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />) as ConversationFilerDialog;
+    const rendered = ReactDOM.findDOMNode(component);
+    expect(rendered.innerHTML).toMatchSnapshot();
+
+    component.props.onCancel();
+    expect(canceled).toBe(true);
 });

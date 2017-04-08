@@ -8,54 +8,48 @@ import { StatusMessage } from "./StatusMessage";
 import { SearchResults } from "./SearchResults";
 import { Feedback } from "./Feedback";
 
-export interface ConversationFilerProps {
+export interface ConversationFilerPageProps {
     mailbox: Office.Mailbox;
-    storedResults?: Data.Match[];
-    onComplete?: (folderId: string) => void;
 }
 
-interface ConversationFilerState {
+interface ConversationFilerPageState {
     progress: Data.Progress;
     data?: Data.IModel;
     error?: string;
     matches?: Data.Match[];
 }
 
-export class ConversationFiler extends React.Component<ConversationFilerProps, ConversationFilerState> {
-    constructor(props: ConversationFilerProps) {
+export class ConversationFilerPage extends React.Component<ConversationFilerPageProps, ConversationFilerPageState> {
+    constructor(props: ConversationFilerPageProps) {
         super(props);
         this.onSelection = this.onSelection.bind(this);
 
-        if (this.props.storedResults) {
-            if (this.props.storedResults.length > 0) {
-                this.state = { progress: Data.Progress.Success, matches: this.props.storedResults };
-            } else {
-                this.state = { progress: Data.Progress.NotFound };
-            }
-        } else {
-            this.state = { progress: Data.Progress.GetCallbackToken };
-        }
+        this.state = { progress: Data.Progress.GetCallbackToken };
     }
 
-    // Start the chain of requests by getting a callback token.
+    // Start the chain of requests to load the data
     componentDidMount() {
-        if (!this.props.mailbox) {
-            return;
-        }
-
         const data = Factory.getData(this.props.mailbox);
-
+ 
         this.setState({ data: data });
 
+        console.log('Starting to load the conversation...');
+
         data.getItemsAsync((results) => {
+            console.log(`Loaded the conversation: ${results.length}`);
+
             if (results.length > 0) {
                 this.setState({ progress: Data.Progress.Success, matches: results });
             } else {
                 this.setState({ progress: Data.Progress.NotFound });
             }
         }, (progress) => {
+            console.log(`Progress loading the conversation: ${Data.Progress[progress]}`);
+
             this.setState({ progress: progress });
         }, (message) => {
+            console.log(`Error loading the conversation: ${message}`);
+
             this.setState({ progress: Data.Progress.Error, error: message });
         });
     }
@@ -63,19 +57,8 @@ export class ConversationFiler extends React.Component<ConversationFilerProps, C
     private onSelection(folderId: string) {
         console.log(`Selected a folder: ${folderId}`);
 
-        if (!this.state.data) {
-            // Handle the dialog or test case by just notifying the client
-            if (this.props.onComplete) {
-                this.props.onComplete(folderId);
-            }
-
-            return;
-        }
-
         this.state.data.moveItemsAsync(folderId, (count) => {
-            if (this.props.onComplete) {
-                this.props.onComplete(folderId);
-            }
+            console.log(`Finished moving the items: ${count}`);
         }, (message) => {
             this.setState({ progress: Data.Progress.Error, error: message });
         });

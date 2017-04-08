@@ -8,7 +8,7 @@ to commit the cardinal sin of losing the source code in a freak laptop recycling
 version which I never updated. The App fell behind in terms of web technologies and Office APIs.
 
 For this version, I reimplemented the UI with React.js, TypeScript 2.2, and I implemented a Data Access Layer which prefers the new [REST
-APIs for Outlook](https://dev.outlook.com/). I translated the EWS Data module back to a TypeScript and put it behind an identical facade,
+APIs for Outlook](https://dev.outlook.com/). I translated the EWS Data module back to TypeScript and put it behind an identical facade,
 because the Outlook 2016 Desktop application *[my day job, both versions of the App were hackathon projects]* doesn't expose the necessary
 JS APIs to call the REST APIs. At runtime, if the App is hosted inside of a container that supports the REST APIs it will use them,
 otherwise it will fall back to the ported EWS DAL from version 1.0.

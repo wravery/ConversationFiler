@@ -4,17 +4,25 @@ import * as ReactDOM from "react-dom";
 import { Pages } from "./pages";
 import { AppFunctions } from "./functions";
 
-import { ConversationFiler } from "./components/ConversationFiler";
+import { ConversationFilerPage } from "./components/ConversationFilerPage";
+import { ConversationFilerDialog } from "./components/ConversationFilerDialog";
 
 Office.initialize = function () {
     if (Pages.shouldHaveUI()) {
         // Show the UI...
         const params = Pages.getUIParameters();
 
-        ReactDOM.render(
-            <ConversationFiler mailbox={params.mailbox} onComplete={params.onComplete} storedResults={params.storedResults} />,
-            document.getElementById("conversationFilerRoot")
-        );
+        if (params.mailbox) {
+            ReactDOM.render(
+                <ConversationFilerPage mailbox={params.mailbox} />,
+                document.getElementById("conversationFilerRoot")
+            );
+        } else {
+            ReactDOM.render(
+                <ConversationFilerDialog onComplete={params.onComplete} onCancel={params.onCancel} storedResults={params.storedResults} />,
+                document.getElementById("conversationFilerRoot")
+            );
+        }
     } else {
         AppFunctions.register();
     }

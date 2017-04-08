@@ -13,6 +13,10 @@ export module Pages {
         return window.location.href.replace(functionsRegex, "/dialog.html");
     }
 
+    export function getAboutUrl(): string {
+        return window.location.href.replace(functionsRegex, "/about.html");
+    }
+
     export function populateDialog(storedResults: Data.Match[]) {
         window.localStorage.setItem(storageKey, JSON.stringify(storedResults));
     }
@@ -24,6 +28,7 @@ export module Pages {
     export interface UIParameters {
         mailbox?: Office.Mailbox,
         onComplete?: (folderId: string) => void;
+        onCancel?: () => void;
         storedResults?: Data.Match[];
     }
 
@@ -31,6 +36,7 @@ export module Pages {
         if (dialogRegex.test(window.location.pathname)) {
             return {
                 onComplete: folderId => { Office.context.ui.messageParent(folderId); },
+                onCancel: () => { Office.context.ui.messageParent(null); },
                 storedResults: <Data.Match[]>JSON.parse(window.localStorage.getItem(storageKey))
             };
         }

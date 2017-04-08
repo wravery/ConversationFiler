@@ -31,7 +31,7 @@ export module AppFunctions {
 
             mailbox.item.notificationMessages.removeAsync(notificationKey);
             Pages.populateDialog(results);
-            Office.context.ui.displayDialogAsync(Pages.getDialogUrl(), { height: 25, width: 50, displayInIframe: true }, (result) => {
+            Office.context.ui.displayDialogAsync(Pages.getDialogUrl(), { height: 40, width: 30, displayInIframe: true }, (result) => {
                 const dialog = <Office.DialogHandler>result.value;
                 const onDialogComplete = () => {
                     Pages.resetDialog();
@@ -39,6 +39,14 @@ export module AppFunctions {
                 };
 
                 dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
+                    if (!dialogEvent.message) {
+                        console.log('Dialog canceled');
+
+                        dialog.close();
+                        onDialogComplete();
+                        return;
+                    }
+
                     console.log('Moving the items...');
 
                     dialog.close();
@@ -94,8 +102,41 @@ export module AppFunctions {
         });
     }
 
+    function aboutDialog(event: any) {
+        Office.context.ui.displayDialogAsync(Pages.getAboutUrl(), { height: 40, width: 25, displayInIframe: true }, (result) => {
+            const dialog = <Office.DialogHandler>result.value;
+            const onDialogComplete = () => {
+                event.completed();
+            };
+
+            dialog.addEventHandler(Office.EventType.DialogMessageReceived, () => {
+                console.log('Dialog closed with button');
+
+                dialog.close();
+                event.completed();
+            });
+
+            dialog.addEventHandler(Office.EventType.DialogEventReceived, () => {
+                console.log('Dialog closed');
+
+                event.completed();
+            });
+        });
+    }
+
+    function sendFeedback(event: any) {
+        Office.context.mailbox.displayNewMessageForm({
+            toRecipients: [{ displayName: 'Bill Avery', emailAddress: 'wravery@hotmail.com' }],
+            subject: 'Conversation Filer v2.0 App for Outlook'
+        });
+
+        event.completed();
+    }
+
     // Add the UI-less function callbacks to the window
     export function register() {
         (<any>window).fileDialog = fileDialog;
+        (<any>window).aboutDialog = aboutDialog;
+        (<any>window).sendFeedback = sendFeedback;
     }
 }
