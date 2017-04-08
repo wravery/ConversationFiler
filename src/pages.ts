@@ -36,7 +36,7 @@ export module Pages {
         if (dialogRegex.test(window.location.pathname)) {
             return {
                 onComplete: folderId => { Office.context.ui.messageParent(folderId); },
-                onCancel: () => { Office.context.ui.messageParent(null); },
+                onCancel: () => { Office.context.ui.messageParent(""); },
                 storedResults: <Data.Match[]>JSON.parse(window.localStorage.getItem(storageKey))
             };
         }

@@ -39,7 +39,7 @@ export module AppFunctions {
                 };
 
                 dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
-                    if (!dialogEvent.message) {
+                    if (dialogEvent.message === "") {
                         console.log('Dialog canceled');
 
                         dialog.close();
