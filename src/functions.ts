@@ -1,10 +1,25 @@
-import { Pages } from "./pages";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+
+import { DialogMessages } from "./messages";
 
 import { Data } from "./Data/Model";
 import { Factory } from "./Data/Factory";
 
-export module AppFunctions {
-    function fileDialog(event: any) {
+import { ConversationFilerDialog } from "./components/ConversationFilerDialog";
+
+module ButtonFunctions {
+    const functionsRegex = /\/functions\.html(\?.*)?$/i;
+
+    function getDialogUrl(): string {
+        return window.location.href.replace(functionsRegex, "/dialog.html");
+    }
+
+    function getAboutUrl(): string {
+        return window.location.href.replace(functionsRegex, "/about.html");
+    }
+
+    export function fileDialog(event: any) {
         const mailbox = Office.context.mailbox;
         const data = Factory.getData(mailbox);
         const notificationKey = 'conversationFilerNotification';
@@ -30,16 +45,16 @@ export module AppFunctions {
             console.log('Showing the dialog...');
 
             mailbox.item.notificationMessages.removeAsync(notificationKey);
-            Pages.populateDialog(results);
-            Office.context.ui.displayDialogAsync(Pages.getDialogUrl(), { height: 40, width: 50, displayInIframe: true }, (result) => {
+            DialogMessages.saveDialog(results);
+            Office.context.ui.displayDialogAsync(getDialogUrl(), { height: 40, width: 50, displayInIframe: true }, (result) => {
                 const dialog = <Office.DialogHandler>result.value;
                 const onDialogComplete = () => {
-                    Pages.resetDialog();
+                    DialogMessages.resetDialog();
                     event.completed();
                 };
 
                 dialog.addEventHandler(Office.EventType.DialogMessageReceived, (dialogEvent: { message: string }) => {
-                    const message = <Pages.DialogMessage>JSON.parse(dialogEvent.message);
+                    const message = <DialogMessages.FileDialogMessage>JSON.parse(dialogEvent.message);
 
                     if (message.canceled) {
                         console.log('Dialog canceled');
@@ -104,8 +119,8 @@ export module AppFunctions {
         });
     }
 
-    function aboutDialog(event: any) {
-        Office.context.ui.displayDialogAsync(Pages.getAboutUrl(), { height: 40, width: 25, displayInIframe: true }, (result) => {
+    export function aboutDialog(event: any) {
+        Office.context.ui.displayDialogAsync(getAboutUrl(), { height: 40, width: 25, displayInIframe: true }, (result) => {
             const dialog = <Office.DialogHandler>result.value;
             const onDialogComplete = () => {
                 event.completed();
@@ -126,7 +141,7 @@ export module AppFunctions {
         });
     }
 
-    function sendFeedback(event: any) {
+    export function sendFeedback(event: any) {
         Office.context.mailbox.displayNewMessageForm({
             toRecipients: [ 'wravery@hotmail.com' ],
             subject: 'Conversation Filer v2.0 App for Outlook'
@@ -134,11 +149,11 @@ export module AppFunctions {
 
         event.completed();
     }
-
-    // Add the UI-less function callbacks to the window
-    export function register() {
-        (<any>window).fileDialog = fileDialog;
-        (<any>window).aboutDialog = aboutDialog;
-        (<any>window).sendFeedback = sendFeedback;
-    }
 }
+
+Office.initialize = function () {
+    // Add the UI-less function callbacks to the window
+    (<any>window).fileDialog = ButtonFunctions.fileDialog;
+    (<any>window).aboutDialog = ButtonFunctions.aboutDialog;
+    (<any>window).sendFeedback = ButtonFunctions.sendFeedback;
+};
