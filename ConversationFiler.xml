@@ -59,53 +59,57 @@
             <OfficeTab id="TabDefault">
               <Group id="msgReadDemoGroup">
                 <Label resid="groupLabel" />
-                <!-- Function (UI-less) button -->
-                <Control xsi:type="Button" id="funcFileButton">
-                  <Label resid="funcFileButtonLabel" />
+                <Control xsi:type="Menu" id="funcMenu">
+                  <Label resid="funcMenuLabel" />
                   <Supertip>
-                    <Title resid="funcFileSuperTipTitle" />
-                    <Description resid="funcFileSuperTipDescription" />
+                    <Title resid="funcMenuSuperTipTitle" />
+                    <Description resid="funcMenuSuperTipDescription" />
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="file-icon-16" />
                     <bt:Image size="32" resid="file-icon-32" />
                     <bt:Image size="80" resid="file-icon-80" />
                   </Icon>
-                  <Action xsi:type="ExecuteFunction">
-                    <FunctionName>fileDialog</FunctionName>
-                  </Action>
-                </Control>
-                <!-- Function (UI-less) button -->
-                <Control xsi:type="Button" id="funcAboutButton">
-                  <Label resid="funcAboutButtonLabel" />
-                  <Supertip>
-                    <Title resid="funcAboutSuperTipTitle" />
-                    <Description resid="funcAboutSuperTipDescription" />
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="file-icon-16" />
-                    <bt:Image size="32" resid="file-icon-32" />
-                    <bt:Image size="80" resid="file-icon-80" />
-                  </Icon>
-                  <Action xsi:type="ExecuteFunction">
-                    <FunctionName>aboutDialog</FunctionName>
-                  </Action>
-                </Control>
-                <!-- Function (UI-less) button -->
-                <Control xsi:type="Button" id="funcFeedbackButton">
-                  <Label resid="funcFeedbackButtonLabel" />
-                  <Supertip>
-                    <Title resid="funcFeedbackSuperTipTitle" />
-                    <Description resid="funcFeedbackSuperTipDescription" />
-                  </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="file-icon-16" />
-                    <bt:Image size="32" resid="file-icon-32" />
-                    <bt:Image size="80" resid="file-icon-80" />
-                  </Icon>
-                  <Action xsi:type="ExecuteFunction">
-                    <FunctionName>sendFeedback</FunctionName>
-                  </Action>
+                  <Items>
+                    <!-- Function (UI-less) button -->
+                    <Item id="funcFileButton">
+                      <Label resid="funcFileButtonLabel" />
+                      <Supertip>
+                        <Title resid="funcFileSuperTipTitle" />
+                        <Description resid="funcFileSuperTipDescription" />
+                      </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="file-icon-16" />
+                        <bt:Image size="32" resid="file-icon-32" />
+                        <bt:Image size="80" resid="file-icon-80" />
+                      </Icon>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>fileDialog</FunctionName>
+                      </Action>
+                    </Item>
+                    <!-- Function (UI-less) button -->
+                    <Item id="funcAboutButton">
+                      <Label resid="funcAboutButtonLabel" />
+                      <Supertip>
+                        <Title resid="funcAboutSuperTipTitle" />
+                        <Description resid="funcAboutSuperTipDescription" />
+                      </Supertip>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>aboutDialog</FunctionName>
+                      </Action>
+                    </Item>
+                    <!-- Function (UI-less) button -->
+                    <Item id="funcFeedbackButton">
+                      <Label resid="funcFeedbackButtonLabel" />
+                      <Supertip>
+                        <Title resid="funcFeedbackSuperTipTitle" />
+                        <Description resid="funcFeedbackSuperTipDescription" />
+                      </Supertip>
+                      <Action xsi:type="ExecuteFunction">
+                        <FunctionName>sendFeedback</FunctionName>
+                      </Action>
+                    </Item>
+                  </Items>
                 </Control>
               </Group>
             </OfficeTab>
@@ -129,6 +133,8 @@
         <bt:String id="groupLabel" DefaultValue="Conversation"/>
 
         <!-- Read mode -->
+        <bt:String id="funcMenuLabel" DefaultValue="File Conversation"/>
+        <bt:String id="funcMenuSuperTipTitle" DefaultValue="File this conversation, find out more, or send feedback"/>
         <bt:String id="funcFileButtonLabel" DefaultValue="File"/>
         <bt:String id="funcFileSuperTipTitle" DefaultValue="File this conversation"/>
         <bt:String id="funcAboutButtonLabel" DefaultValue="About"/>
@@ -138,6 +144,7 @@
       </bt:ShortStrings>
       <bt:LongStrings>
         <!-- Read mode -->
+        <bt:String id="funcMenuSuperTipDescription" DefaultValue="File these messages with other messages in the same conversation, learn more about the App, or send feedback to the author of the App."/>
         <bt:String id="funcFileSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
         <bt:String id="funcAboutSuperTipDescription" DefaultValue="Show more information about the Conversation Filer App."/>
         <bt:String id="funcFeedbackSuperTipDescription" DefaultValue="Send feedback about this App to the author."/>
@@ -163,53 +170,57 @@
               <OfficeTab id="TabDefault">
                 <Group id="msgReadDemoGroup">
                   <Label resid="groupLabel" />
-                  <!-- Function (UI-less) button -->
-                  <Control xsi:type="Button" id="funcFileButton">
-                    <Label resid="funcFileButtonLabel" />
+                  <Control xsi:type="Menu" id="funcMenu">
+                    <Label resid="funcMenuLabel" />
                     <Supertip>
-                      <Title resid="funcFileSuperTipTitle" />
-                      <Description resid="funcFileSuperTipDescription" />
+                      <Title resid="funcMenuSuperTipTitle" />
+                      <Description resid="funcMenuSuperTipDescription" />
                     </Supertip>
                     <Icon>
                       <bt:Image size="16" resid="file-icon-16" />
                       <bt:Image size="32" resid="file-icon-32" />
                       <bt:Image size="80" resid="file-icon-80" />
                     </Icon>
-                    <Action xsi:type="ExecuteFunction">
-                      <FunctionName>fileDialog</FunctionName>
-                    </Action>
-                  </Control>
-                  <!-- Function (UI-less) button -->
-                  <Control xsi:type="Button" id="funcAboutButton">
-                    <Label resid="funcAboutButtonLabel" />
-                    <Supertip>
-                      <Title resid="funcAboutSuperTipTitle" />
-                      <Description resid="funcAboutSuperTipDescription" />
-                    </Supertip>
-                    <Icon>
-                      <bt:Image size="16" resid="file-icon-16" />
-                      <bt:Image size="32" resid="file-icon-32" />
-                      <bt:Image size="80" resid="file-icon-80" />
-                    </Icon>
-                    <Action xsi:type="ExecuteFunction">
-                      <FunctionName>aboutDialog</FunctionName>
-                    </Action>
-                  </Control>
-                  <!-- Function (UI-less) button -->
-                  <Control xsi:type="Button" id="funcFeedbackButton">
-                    <Label resid="funcFeedbackButtonLabel" />
-                    <Supertip>
-                      <Title resid="funcFeedbackSuperTipTitle" />
-                      <Description resid="funcFeedbackSuperTipDescription" />
-                    </Supertip>
-                    <Icon>
-                      <bt:Image size="16" resid="file-icon-16" />
-                      <bt:Image size="32" resid="file-icon-32" />
-                      <bt:Image size="80" resid="file-icon-80" />
-                    </Icon>
-                    <Action xsi:type="ExecuteFunction">
-                      <FunctionName>sendFeedback</FunctionName>
-                    </Action>
+                    <Items>
+                      <!-- Function (UI-less) button -->
+                      <Item id="funcFileButton">
+                        <Label resid="funcFileButtonLabel" />
+                        <Supertip>
+                          <Title resid="funcFileSuperTipTitle" />
+                          <Description resid="funcFileSuperTipDescription" />
+                        </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="file-icon-16" />
+                          <bt:Image size="32" resid="file-icon-32" />
+                          <bt:Image size="80" resid="file-icon-80" />
+                        </Icon>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>fileDialog</FunctionName>
+                        </Action>
+                      </Item>
+                      <!-- Function (UI-less) button -->
+                      <Item id="funcAboutButton">
+                        <Label resid="funcAboutButtonLabel" />
+                        <Supertip>
+                          <Title resid="funcAboutSuperTipTitle" />
+                          <Description resid="funcAboutSuperTipDescription" />
+                        </Supertip>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>aboutDialog</FunctionName>
+                        </Action>
+                      </Item>
+                      <!-- Function (UI-less) button -->
+                      <Item id="funcFeedbackButton">
+                        <Label resid="funcFeedbackButtonLabel" />
+                        <Supertip>
+                          <Title resid="funcFeedbackSuperTipTitle" />
+                          <Description resid="funcFeedbackSuperTipDescription" />
+                        </Supertip>
+                        <Action xsi:type="ExecuteFunction">
+                          <FunctionName>sendFeedback</FunctionName>
+                        </Action>
+                      </Item>
+                    </Items>
                   </Control>
                 </Group>
               </OfficeTab>
@@ -262,6 +273,8 @@
           <bt:String id="groupLabel" DefaultValue="Conversation"/>
 
           <!-- Read mode -->
+          <bt:String id="funcMenuLabel" DefaultValue="File Conversation"/>
+          <bt:String id="funcMenuSuperTipTitle" DefaultValue="File this conversation, find out more, or send feedback"/>
           <bt:String id="funcFileButtonLabel" DefaultValue="File"/>
           <bt:String id="funcFileSuperTipTitle" DefaultValue="File this conversation"/>
           <bt:String id="funcAboutButtonLabel" DefaultValue="About"/>
@@ -271,6 +284,7 @@
         </bt:ShortStrings>
         <bt:LongStrings>
           <!-- Read mode -->
+          <bt:String id="funcMenuSuperTipDescription" DefaultValue="File these messages with other messages in the same conversation, learn more about the App, or send feedback to the author of the App."/>
           <bt:String id="funcFileSuperTipDescription" DefaultValue="Search for folders where you've previously filed messages in this conversation and offer to file these messages in the same location."/>
           <bt:String id="funcAboutSuperTipDescription" DefaultValue="Show more information about the Conversation Filer App."/>
           <bt:String id="funcFeedbackSuperTipDescription" DefaultValue="Send feedback about this App to the author."/>
