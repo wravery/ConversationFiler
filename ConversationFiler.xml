@@ -94,6 +94,11 @@
                         <Title resid="funcAboutSuperTipTitle" />
                         <Description resid="funcAboutSuperTipDescription" />
                       </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="info-icon-16" />
+                        <bt:Image size="32" resid="info-icon-32" />
+                        <bt:Image size="80" resid="info-icon-80" />
+                      </Icon>
                       <Action xsi:type="ExecuteFunction">
                         <FunctionName>aboutDialog</FunctionName>
                       </Action>
@@ -105,6 +110,11 @@
                         <Title resid="funcFeedbackSuperTipTitle" />
                         <Description resid="funcFeedbackSuperTipDescription" />
                       </Supertip>
+                      <Icon>
+                        <bt:Image size="16" resid="feedback-icon-16" />
+                        <bt:Image size="32" resid="feedback-icon-32" />
+                        <bt:Image size="80" resid="feedback-icon-80" />
+                      </Icon>
                       <Action xsi:type="ExecuteFunction">
                         <FunctionName>sendFeedback</FunctionName>
                       </Action>
@@ -125,6 +135,16 @@
         <bt:Image id="file-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-16.png"/>
         <bt:Image id="file-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-32.png"/>
         <bt:Image id="file-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-80.png"/>
+
+        <!-- About icon -->
+        <bt:Image id="info-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/info-16.png"/>
+        <bt:Image id="info-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/info-32.png"/>
+        <bt:Image id="info-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/info-80.png"/>
+
+        <!-- Feedback icon -->
+        <bt:Image id="feedback-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/feedback-16.png"/>
+        <bt:Image id="feedback-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/feedback-32.png"/>
+        <bt:Image id="feedback-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/feedback-80.png"/>
       </bt:Images>
       <bt:Urls>
         <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
@@ -205,6 +225,11 @@
                           <Title resid="funcAboutSuperTipTitle" />
                           <Description resid="funcAboutSuperTipDescription" />
                         </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="info-icon-16" />
+                          <bt:Image size="32" resid="info-icon-32" />
+                          <bt:Image size="80" resid="info-icon-80" />
+                        </Icon>
                         <Action xsi:type="ExecuteFunction">
                           <FunctionName>aboutDialog</FunctionName>
                         </Action>
@@ -216,6 +241,11 @@
                           <Title resid="funcFeedbackSuperTipTitle" />
                           <Description resid="funcFeedbackSuperTipDescription" />
                         </Supertip>
+                        <Icon>
+                          <bt:Image size="16" resid="feedback-icon-16" />
+                          <bt:Image size="32" resid="feedback-icon-32" />
+                          <bt:Image size="80" resid="feedback-icon-80" />
+                        </Icon>
                         <Action xsi:type="ExecuteFunction">
                           <FunctionName>sendFeedback</FunctionName>
                         </Action>
@@ -265,6 +295,16 @@
           <bt:Image id="file-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-16.png"/>
           <bt:Image id="file-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-32.png"/>
           <bt:Image id="file-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/file-80.png"/>
+
+          <!-- About icon -->
+          <bt:Image id="info-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/info-16.png"/>
+          <bt:Image id="info-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/info-32.png"/>
+          <bt:Image id="info-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/info-80.png"/>
+
+          <!-- Feedback icon -->
+          <bt:Image id="feedback-icon-16" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/feedback-16.png"/>
+          <bt:Image id="feedback-icon-32" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/feedback-32.png"/>
+          <bt:Image id="feedback-icon-80" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/feedback-80.png"/>
         </bt:Images>
         <bt:Urls>
           <bt:Url id="functionFile" DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/functions.html"/>
