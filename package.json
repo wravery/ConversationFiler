@@ -1,8 +1,13 @@
 {
   "name": "conversation-filer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React.js port of the Conversation Filer Agave",
-  "main": "./dist/bundle.js",
+  "main": "./dist/functions.js",
+  "files": [
+    "./Content/",
+    "./dist/",
+    "./*.html"
+  ],
   "scripts": {
     "build": "webpack --optimize-minimize",
     "start": "webpack-dev-server --open --watch",
@@ -13,7 +18,7 @@
     "Outlook"
   ],
   "author": "Bill Avery <wravery@hotmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/wravery/ConversationFiler.git"
