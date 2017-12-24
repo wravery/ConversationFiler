@@ -273,7 +273,7 @@ export module RESTData {
             console.log(`Moving items to folder: ${folderId}`);
 
             const requests: JQuery.jqXHR<MessageJson>[] = this.conversationMessages
-                .filter(message => message.ParentFolderId !== this.currentFolderId)
+                .filter(message => message.ParentFolderId === this.currentFolderId)
                 .map(message => {
                     const restUrl = `${this.mailbox.restUrl}${Endpoint}/messages/${message.Id}/move`;
 
