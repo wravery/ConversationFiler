@@ -94,13 +94,21 @@ export module RESTData {
             }
         }
 
-        // If we're on iOS, the IDs we get from Office.context.mailbox.item are already REST IDs. Otherwise we need
-        // to convert them from the EWS ID format to the REST ID format.
+        // Test for each of the Diagnostic.hostName values that Outlook Mobile uses.
+        private isOutlookMobile() {
+            return this.mailbox.diagnostics.hostName === 'OutlookIOS'
+                || this.mailbox.diagnostics.hostName === 'OutlookAndroid';
+        }
+
+        // Perform any necessary conversion from the EWS ID format to the REST ID format.
         private getRestId(itemId: string) {
-            if (this.mailbox.diagnostics.hostName === 'OutlookIOS') {
+            if (this.isOutlookMobile()) {
+                // If we're running in Outlook Mobile on iOS or Android, the IDs we get from
+                // Office.context.mailbox.item are already REST IDs.
                 return itemId;
             }
 
+            // Otherwise we need to convert them from the EWS ID format to the REST ID format.
             return this.mailbox.convertToRestId(itemId, Office.MailboxEnums.RestVersion.v2_0);
         }
 
