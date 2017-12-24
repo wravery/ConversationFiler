@@ -34,6 +34,7 @@ module.exports = {
     externals: {
         "react": "React",
         "react-dom": "ReactDOM",
-        "jquery": "JQuery"
+        "jquery": "JQuery",
+        "office-js": "Office"
     }
 };

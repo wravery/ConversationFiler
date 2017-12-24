@@ -17,7 +17,7 @@ export class StatusMessage extends React.Component<StatusMessageProps, undefined
             case Data.Progress.GetConversation:
             case Data.Progress.GetExcludedFolders:
             case Data.Progress.GetFolderNames:
-                return <span className="ms-font-l">Looking for other messages in this conversation... {Office.context.mailbox.diagnostics.hostName}</span>;
+                return <span className="ms-font-l">Looking for other messages in this conversation...</span>;
 
             case Data.Progress.Success:
                 return null;

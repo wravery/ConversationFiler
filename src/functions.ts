@@ -104,7 +104,7 @@ module ButtonFunctions {
             // Update the progress indicator
             mailbox.item.notificationMessages.replaceAsync(notificationKey, {
                 type: Office.MailboxEnums.ItemNotificationMessageType.ProgressIndicator,
-                message: 'Finding the messages in this conversation...'
+                message: `Finding the messages in this conversation... ${Office.context.mailbox.diagnostics.hostName}`
             });
         }, (message) => {
             console.log(`Error loading the conversation: ${message}`);
