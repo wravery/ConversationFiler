@@ -9,7 +9,7 @@ import { SearchResults } from "./SearchResults";
 import { Feedback } from "./Feedback";
 
 export interface ConversationFilerPageProps {
-    mailbox: Office.Mailbox;
+    mailbox: Data.Mailbox;
 }
 
 interface ConversationFilerPageState {

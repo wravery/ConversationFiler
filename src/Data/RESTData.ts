@@ -40,7 +40,7 @@ export module RESTData {
     }
 
     class Context {
-        constructor(private mailbox: Office.Mailbox) {
+        constructor(private mailbox: Data.Mailbox) {
             this.itemId = this.getRestId((<Office.ItemRead>this.mailbox.item).itemId);
         }
 
@@ -76,19 +76,19 @@ export module RESTData {
 
         // Sometimes we need to make separate REST requests for multiple items. Wait until they all complete and then
         // invoke the callbacks all at once with an array of typed results.
-        private collateRequests<T>(requests: JQueryPromise<T>[], onDone: (results: T[]) => void, onFail: (message: string) => void): void {
+        private collateRequests<T>(requests: JQuery.jqXHR<T>[], onDone: (results: T[]) => void, onFail: (message: string) => void): void {
             if (requests.length > 1) {
                 $.when.apply($, requests)
                     .done((...results: any[]) => {
                         onDone(results.map(result => <T>result[0]));
-                    }).fail((message: string) => {
+                    }).fail((request: JQuery.jqXHR, status: JQuery.Ajax.ErrorTextStatus, message: string) => {
                         this.onError(message);
                     });
             } else {
                 requests[0]
                     .done((result: T) => {
                         onDone([result]);
-                    }).fail((message: string) => {
+                    }).fail((request: JQuery.jqXHR, status: JQuery.Ajax.ErrorTextStatus, message: string) => {
                         this.onError(message);
                     });
             }
@@ -122,7 +122,7 @@ export module RESTData {
                 headers: { 'Authorization': `Bearer ${this.token}` }
             }).done((result: MessageJsonCollection) => {
                 this.getExcludedFolders(result);
-            }).fail((message: string) => {
+            }).fail((request: JQuery.jqXHR, status: JQuery.Ajax.ErrorTextStatus, message: string) => {
                 this.onError(message);
             });
         }
@@ -144,7 +144,7 @@ export module RESTData {
                 .reduce((previousValue: string, value) => value.ParentFolderId, undefined);
 
             // We should exclude some special folders, but we need to get their folderIds.
-            let requests: JQueryXHR[] = [];
+            let requests: JQuery.jqXHR<FolderJson>[] = [];
 
             for (let i = 0; i < ExcludedFolders.Count; ++i) {
                 const folderId = ExcludedFolders[i];
@@ -162,7 +162,7 @@ export module RESTData {
 
             this.onProgress(Data.Progress.GetExcludedFolders);
 
-            this.collateRequests(<JQueryPromise<FolderJson>[]>requests, (results) => {
+            this.collateRequests(requests, (results) => {
                 const excludedFolderIds = results.map(value => value.Id);
 
                 this.getFolderNames(currentFolderId, excludedFolderIds);
@@ -198,7 +198,7 @@ export module RESTData {
             this.currentFolderId = currentFolderId;
             this.excludedFolderIds = excludedFolderIds;
 
-            const requests = folderMap
+            const requests: JQuery.jqXHR<FolderJson>[] = folderMap
                 .filter(entry => !this.excludedFolderIds.reduce((previousValue, value) =>
                     previousValue || value === entry.folder.Id, false))
                 .map((entry) => {
@@ -221,7 +221,7 @@ export module RESTData {
 
             this.onProgress(Data.Progress.GetFolderNames);
 
-            this.collateRequests(<JQueryPromise<FolderJson>[]>requests, (results: FolderJson[]) => {
+            this.collateRequests(requests, (results: FolderJson[]) => {
                 results.forEach((value) => {
                     for (let i = 0; i < folderMap.length; ++i) {
                         if (folderMap[i].folder.Id === value.Id) {
@@ -264,7 +264,7 @@ export module RESTData {
 
             console.log(`Moving items to folder: ${folderId}`);
 
-            const requests = this.conversationMessages
+            const requests: JQuery.jqXHR<MessageJson>[] = this.conversationMessages
                 .filter(message => message.ParentFolderId !== this.currentFolderId)
                 .map(message => {
                     const restUrl = `${this.mailbox.restUrl}${Endpoint}/messages/${message.Id}/move`;
@@ -282,7 +282,7 @@ export module RESTData {
                     })
                 });
 
-            this.collateRequests(<JQueryPromise<MessageJson>[]>requests, (results: MessageJson[]) => {
+            this.collateRequests(requests, (results: MessageJson[]) => {
                 console.log(`Finished moving items to other folder: ${results.length}`);
                 this.onMoveComplete(results.length);
             }, (message: string) => {
@@ -294,7 +294,7 @@ export module RESTData {
     export class Model implements Data.IModel {
         private context?: Context;
 
-        constructor(mailbox: Office.Mailbox) {
+        constructor(mailbox: Data.Mailbox) {
             this.context = new Context(mailbox);
         }
 

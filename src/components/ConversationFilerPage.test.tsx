@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Data } from "../Data/Model";
 import { Factory } from "../Data/__mocks__/Factory";
@@ -16,10 +16,11 @@ test("Loading", () => {
     const log = console.log;
     console.log = jest.fn((message: string) => {
         expect(message).toMatchSnapshot();
-    });
+    }) as any;
 
-    const component = TestUtils.renderIntoDocument(<ConversationFilerPage mailbox={mockMailbox} />) as ConversationFilerPage;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <ConversationFilerPage mailbox={mockMailbox} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     console.log = log;
@@ -34,10 +35,11 @@ test("Empty results", () => {
     const log = console.log;
     console.log = jest.fn((message: string) => {
         expect(message).toMatchSnapshot();
-    });
+    }) as any;
 
-    const component = TestUtils.renderIntoDocument(<ConversationFilerPage mailbox={mockMailbox} />) as ConversationFilerPage;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <ConversationFilerPage mailbox={mockMailbox} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     console.log = log;
@@ -76,10 +78,11 @@ test("Dummy data", () => {
     const log = console.log;
     console.log = jest.fn((message: string) => {
         expect(message).toMatchSnapshot();
-    });
+    }) as any;
 
-    const component = TestUtils.renderIntoDocument(<ConversationFilerPage mailbox={mockMailbox} />) as ConversationFilerPage;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <ConversationFilerPage mailbox={mockMailbox} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     console.log = log;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Data } from "../Data/Model";
 
@@ -37,8 +37,9 @@ test("SearchResults should render", () => {
         fail('Just rendering the dummy data should not invoke a callback.');
     };
 
-    const component = TestUtils.renderIntoDocument(<SearchResults matches={dummyResults} onSelection={onSelection} />) as SearchResults;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <SearchResults matches={dummyResults} onSelection={onSelection} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 });
 
@@ -60,12 +61,13 @@ test("SearchResults onSelection callback should work", () => {
         }
     }];
 
-   const onSelection = (selected: string) => {
-        selectedId = selected;
-    };
-
-    const component = TestUtils.renderIntoDocument(<SearchResults matches={dummyResults} onSelection={onSelection} />) as SearchResults;
-    const rendered = ReactDOM.findDOMNode(component);
+    const onSelection = (selected: string) => {
+         selectedId = selected;
+     };
+ 
+    const component = <SearchResults matches={dummyResults} onSelection={onSelection} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     component.props.onSelection(folderId);

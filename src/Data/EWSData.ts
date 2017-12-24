@@ -150,7 +150,7 @@ export module EWSData {
     }
 
     class Context {
-        constructor(private mailbox: Office.Mailbox) {
+        constructor(private mailbox: Data.Mailbox) {
             this.itemId = (<Office.ItemRead>this.mailbox.item).itemId;
         }
 
@@ -402,7 +402,7 @@ export module EWSData {
     export class Model implements Data.IModel {
         private context?: Context;
 
-        constructor(mailbox: Office.Mailbox) {
+        constructor(mailbox: Data.Mailbox) {
             this.context = new Context(mailbox);
         }
 

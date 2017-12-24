@@ -1,7 +1,7 @@
 import { Data } from "../Model";
 
 export module Factory {
-    export interface MockMailbox extends Office.Mailbox {
+    export interface MockMailbox extends Data.Mailbox {
         mockResults: Data.Match[];
     }
 
@@ -27,7 +27,7 @@ export module Factory {
     }
 
     // Use the MockData provider
-    export function getData(mailbox: Office.Mailbox): Data.IModel {
+    export function getData(mailbox: Data.Mailbox): Data.IModel {
         return new MockData((<MockMailbox>mailbox).mockResults);
     }
 }

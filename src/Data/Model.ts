@@ -1,4 +1,14 @@
 export module Data {
+    export interface Mailbox {
+        restUrl?: string;
+        diagnostics?: Office.Diagnostics;
+        item?: Office.Item;
+
+        convertToRestId?: (itemId: string, restVersion: Office.MailboxEnums.RestVersion) => string;
+        getCallbackTokenAsync?: (options: { isRest: boolean }, callback?: (result: Office.AsyncResult) => void, userContext?: any) => void;
+        makeEwsRequestAsync?: (data: any, callback?: (result: Office.AsyncResult) => void, userContext?: any) => void;
+    }
+
     export interface Message {
         Id: string;
         BodyPreview: string;

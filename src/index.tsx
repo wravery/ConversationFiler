@@ -5,7 +5,7 @@ import { ConversationFilerPage } from "./components/ConversationFilerPage";
 
 Office.initialize = function () {
     ReactDOM.render(
-        <ConversationFilerPage mailbox={Office.context.mailbox} />,
+        <ConversationFilerPage mailbox={Office.context.mailbox as any} />,
         document.getElementById("conversationFilerRoot")
     );
 };

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import * as TestUtils from "react-dom/test-utils";
 
 import { Data } from "../Data/Model";
 
@@ -41,8 +41,9 @@ test("Dummy data", () => {
         fail("The dialog should not be canceled");
     }
 
-    const component = TestUtils.renderIntoDocument(<ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />) as ConversationFilerDialog;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 });
 
@@ -72,8 +73,9 @@ test("Folder selection callback works", () => {
         fail("The dialog should not be canceled");
     }
 
-    const component = TestUtils.renderIntoDocument(<ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />) as ConversationFilerDialog;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     component.props.onComplete(folderId);
@@ -106,8 +108,9 @@ test("Cancel button callback works", () => {
         canceled = true;
     }
 
-    const component = TestUtils.renderIntoDocument(<ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />) as ConversationFilerDialog;
-    const rendered = ReactDOM.findDOMNode(component);
+    const component = <ConversationFilerDialog storedResults={dummyResults} onComplete={onComplete} onCancel={onCancel} />;
+    const element = TestUtils.renderIntoDocument(component);
+    const rendered = ReactDOM.findDOMNode(element as React.ReactInstance);
     expect(rendered.innerHTML).toMatchSnapshot();
 
     component.props.onCancel();

@@ -21,7 +21,7 @@ module ButtonFunctions {
 
     export function fileDialog(event: any) {
         const mailbox = Office.context.mailbox;
-        const data = Factory.getData(mailbox);
+        const data = Factory.getData(<any>mailbox);
         const notificationKey = 'conversationFilerNotification';
 
         console.log('Starting to load the conversation...');

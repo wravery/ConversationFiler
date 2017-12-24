@@ -4,16 +4,16 @@ exports[`Dummy data 1`] = `"Starting to load the conversation..."`;
 
 exports[`Dummy data 2`] = `"Loaded the conversation: 2"`;
 
-exports[`Dummy data 3`] = `"<!-- react-empty: 8 --><div><span class=\\"ms-font-l\\">I found some items in this conversation filed in other folders. Click on one of the folders listed here to automatically reunite this part of the conversation with the ones that came before:</span><br><div class=\\"ms-Viewport\\" style=\\"min-width: 1px; min-height: 1px;\\"></div></div><div class=\\"feedback ms-font-s\\"><a href=\\"https://beandotnet.azurewebsites.net/\\">about this app</a><!-- react-text: 6 -->&nbsp;<!-- /react-text --><a href=\\"mailto:wravery@hotmail.com?Subject=Conversation%20Filer%20v2.0%20App%20for%20Outlook\\">send feedback</a></div>"`;
+exports[`Dummy data 3`] = `"<div><span class=\\"ms-font-l\\">I found some items in this conversation filed in other folders. Click on one of the folders listed here to automatically reunite this part of the conversation with the ones that came before:</span><br><div class=\\"ms-Viewport\\" style=\\"min-width: 1px; min-height: 1px;\\"></div></div><div class=\\"feedback ms-font-s\\"><a href=\\"https://beandotnet.azurewebsites.net/\\">about this app</a>&nbsp;<a href=\\"mailto:wravery@hotmail.com?Subject=Conversation%20Filer%20v2.0%20App%20for%20Outlook\\">send feedback</a></div>"`;
 
 exports[`Empty results 1`] = `"Starting to load the conversation..."`;
 
 exports[`Empty results 2`] = `"Error loading the conversation: Empty results"`;
 
-exports[`Empty results 3`] = `"<div><span class=\\"ms-font-l\\">Sorry, I couldn't figure out where this message should go. :(</span><br><span class=\\"ms-font-m\\">Empty results</span></div><!-- react-empty: 3 --><div class=\\"feedback ms-font-s\\"><a href=\\"https://beandotnet.azurewebsites.net/\\">about this app</a><!-- react-text: 6 -->&nbsp;<!-- /react-text --><a href=\\"mailto:wravery@hotmail.com?Subject=Conversation%20Filer%20v2.0%20App%20for%20Outlook\\">send feedback</a></div>"`;
+exports[`Empty results 3`] = `"<div><span class=\\"ms-font-l\\">Sorry, I couldn't figure out where this message should go. :(</span><br><span class=\\"ms-font-m\\">Empty results</span></div><div class=\\"feedback ms-font-s\\"><a href=\\"https://beandotnet.azurewebsites.net/\\">about this app</a>&nbsp;<a href=\\"mailto:wravery@hotmail.com?Subject=Conversation%20Filer%20v2.0%20App%20for%20Outlook\\">send feedback</a></div>"`;
 
 exports[`Loading 1`] = `"Starting to load the conversation..."`;
 
 exports[`Loading 2`] = `"Progress loading the conversation: GetCallbackToken"`;
 
-exports[`Loading 3`] = `"<span class=\\"ms-font-l\\">Looking for other messages in this conversation...</span><!-- react-empty: 3 --><div class=\\"feedback ms-font-s\\"><a href=\\"https://beandotnet.azurewebsites.net/\\">about this app</a><!-- react-text: 6 -->&nbsp;<!-- /react-text --><a href=\\"mailto:wravery@hotmail.com?Subject=Conversation%20Filer%20v2.0%20App%20for%20Outlook\\">send feedback</a></div>"`;
+exports[`Loading 3`] = `"<span class=\\"ms-font-l\\">Looking for other messages in this conversation...</span><div class=\\"feedback ms-font-s\\"><a href=\\"https://beandotnet.azurewebsites.net/\\">about this app</a>&nbsp;<a href=\\"mailto:wravery@hotmail.com?Subject=Conversation%20Filer%20v2.0%20App%20for%20Outlook\\">send feedback</a></div>"`;
