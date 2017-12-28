@@ -12,7 +12,7 @@
   <DisplayName DefaultValue="Conversation Filer" />
   <Description DefaultValue="Automatically suggest filing messages out of the Inbox based on previously filed messages in the conversation."/>
   <IconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/ConversationFilerLogo.png" />
-  <HighResolutionIconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/ConversationFilerLogo.png" />
+  <HighResolutionIconUrl DefaultValue="https://beandotnet.azurewebsites.net/MailApps/ConversationFiler/Content/HighResConversationFilerLogo.png" />
   <SupportUrl DefaultValue="https://github.com/wravery/ConversationFiler/issues" />
   <Hosts>
     <Host Name="Mailbox" />
