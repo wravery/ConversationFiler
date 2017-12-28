@@ -47,6 +47,7 @@
     <Requirements>
       <bt:Sets DefaultMinVersion="1.4">
         <bt:Set Name="Mailbox" />
+        <bt:Set Name="Dialog" />
       </bt:Sets>
     </Requirements>
     <Hosts>
@@ -178,6 +179,7 @@
       <Requirements>
         <bt:Sets DefaultMinVersion="1.4">
           <bt:Set Name="Mailbox" />
+          <bt:Set Name="Dialog" />
         </bt:Sets>
       </Requirements>
       <Hosts>

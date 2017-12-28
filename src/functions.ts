@@ -88,7 +88,7 @@ module ButtonFunctions {
 
                         mailbox.item.notificationMessages.replaceAsync(notificationKey, {
                             type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
-                            message: `Something went wrong, I couldn't move the messages.`
+                            message: `Something went wrong, I couldn't move the messages: ${message}`
                         });
                         onDialogComplete();
                     });
@@ -112,7 +112,7 @@ module ButtonFunctions {
             // Display an error
             mailbox.item.notificationMessages.replaceAsync(notificationKey, {
                 type: Office.MailboxEnums.ItemNotificationMessageType.ErrorMessage,
-                message: `Sorry, I couldn't figure out where this message should go.`
+                message: `Sorry, I couldn't figure out where this message should go: ${message}`
             });
 
             event.completed();
@@ -144,7 +144,7 @@ module ButtonFunctions {
     export function sendFeedback(event: any) {
         Office.context.mailbox.displayNewMessageForm({
             toRecipients: [ 'wravery@hotmail.com' ],
-            subject: 'Conversation Filer v2.0 App for Outlook'
+            subject: 'Conversation Filer for Outlook'
         });
 
         event.completed();

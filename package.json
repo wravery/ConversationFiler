@@ -1,7 +1,7 @@
 {
   "name": "conversation-filer",
   "version": "2.0.0",
-  "description": "React.js port of the Conversation Filer Agave",
+  "description": "React.js port of the Conversation Filer Add-in",
   "main": "./dist/functions.js",
   "files": [
     "./Content/",
