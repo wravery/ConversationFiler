@@ -19,7 +19,7 @@
   </Hosts>
   <Requirements>
     <Sets>
-      <Set Name="MailBox" MinVersion="1.1" />
+      <Set Name="Mailbox" MinVersion="1.1" />
     </Sets>
   </Requirements>
   <!-- These elements support older clients that don't support add-in commands -->
@@ -47,7 +47,6 @@
     <Requirements>
       <bt:Sets DefaultMinVersion="1.4">
         <bt:Set Name="Mailbox" />
-        <bt:Set Name="Dialog" />
       </bt:Sets>
     </Requirements>
     <Hosts>
@@ -179,7 +178,6 @@
       <Requirements>
         <bt:Sets DefaultMinVersion="1.4">
           <bt:Set Name="Mailbox" />
-          <bt:Set Name="Dialog" />
         </bt:Sets>
       </Requirements>
       <Hosts>
